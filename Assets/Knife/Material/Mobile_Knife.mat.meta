@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 43e144b67a79edf41aed3186e1052508
+timeCreated: 1554670630
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 143769
+  packageName: Knife
+  packageVersion: 1.0
+  assetPath: Assets/Knife/Material/Mobile_Knife.mat
+  uploadId: 304547

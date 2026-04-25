@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ac9320ed61e77a1448a4648a963f0695
+timeCreated: 1554671028
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 143769
+  packageName: Knife
+  packageVersion: 1.0
+  assetPath: Assets/Knife/Prefab/Specular/Knife_LODC.prefab
+  uploadId: 304547

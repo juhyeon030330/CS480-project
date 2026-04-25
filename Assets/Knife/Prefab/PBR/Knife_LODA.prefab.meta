@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 330f1284895b681479f9ae6496652273
+timeCreated: 1554670816
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 143769
+  packageName: Knife
+  packageVersion: 1.0
+  assetPath: Assets/Knife/Prefab/PBR/Knife_LODA.prefab
+  uploadId: 304547

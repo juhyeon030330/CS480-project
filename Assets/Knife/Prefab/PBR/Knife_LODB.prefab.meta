@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 1533f2e2578f00d4c8ae061c9420478f
+timeCreated: 1554670829
+licenseType: Store
+NativeFormatImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 143769
+  packageName: Knife
+  packageVersion: 1.0
+  assetPath: Assets/Knife/Prefab/PBR/Knife_LODB.prefab
+  uploadId: 304547
