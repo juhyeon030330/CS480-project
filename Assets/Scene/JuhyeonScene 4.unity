@@ -11831,8 +11831,8 @@ GameObject:
   - component: {fileID: 117018227}
   - component: {fileID: 117018226}
   - component: {fileID: 117018225}
-  - component: {fileID: 117018229}
   - component: {fileID: 117018230}
+  - component: {fileID: 117018231}
   m_Layer: 0
   m_Name: Boss
   m_TagString: Boss
@@ -11933,22 +11933,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &117018229
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117018224}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d7699a8cda64244a383b38aa63511af9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossScript
-  maxHealth: 100
-  currentHealth: 0
-  player: {fileID: 0}
-  moveSpeed: 2
 --- !u!54 &117018230
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -11976,6 +11960,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
+--- !u!114 &117018231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 117018224}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 88160679c8b404505b0aad273d435b41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+  maxHealth: 100
 --- !u!1 &158770721
 GameObject:
   m_ObjectHideFlags: 0
@@ -17609,7 +17606,6 @@ GameObject:
   - component: {fileID: 7919852712945323450}
   - component: {fileID: 1684794805860296024}
   - component: {fileID: 8738405799472294462}
-  - component: {fileID: 8738405799472294463}
   - component: {fileID: 8738405799472294464}
   m_Layer: 0
   m_Name: Ghost
@@ -18530,23 +18526,6 @@ CapsuleCollider:
   m_Height: 1
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &8738405799472294463
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 19588385489634748}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 638bd5608d50e4a94b11a12075e7b34a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerConCopy
-  totalJumpsAllowed: 2
-  jumpHeight: 10
-  speed: 50
-  attackRange: 5
-  hitEffectPrefab: {fileID: 0}
 --- !u!114 &8738405799472294464
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18559,11 +18538,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d277f0968a5854e92a3519243418dcfe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMovement
-  totalJumpsAllowed: 2
-  jumpHeight: 10
   speed: 50
-  attackRange: 5
-  hitEffectPrefab: {fileID: 0}
+  jumpHeight: 10
+  chargePower: 20
+  damageAmount: 25
 --- !u!1 &9204173438402945558
 GameObject:
   m_ObjectHideFlags: 0
