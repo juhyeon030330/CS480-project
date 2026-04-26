@@ -12,13 +12,15 @@ public class NewMovement : MonoBehaviour
 
     [Header("Charge Attack")]
     public float chargePower = 20f;
-    public float damageAmount = 25f;
-    private bool isCharging = false;
+
+    [Header("Scripts")]
+    private Attack attackScript;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        rb.freezeRotation = true; 
+        rb.freezeRotation = true;
+        attackScript = GetComponent<Attack>();
     }
 
     // --- SIMPLE MOVEMENT ---
@@ -42,41 +44,26 @@ public class NewMovement : MonoBehaviour
     // --- THE CHARGE ATTACK ---
     void OnAttack(InputValue value)
     {
-        if (value.isPressed)
+        if (value.isPressed && attackScript != null)
         {
-            isCharging = true;
-            // Lunge forward based on where the ghost is facing
-            rb.AddForce(transform.forward * chargePower, ForceMode.Impulse);
+            // Flip switch ON
+            attackScript.SetAttackActive(true);
             
-            // End charge state after 0.5 seconds
+            rb.AddForce(transform.forward * chargePower, ForceMode.Impulse);
             Invoke(nameof(EndCharge), 0.5f);
         }
     }
 
-    void EndCharge() => isCharging = false;
+    void EndCharge()
+    {
+        // Flip switch OFF
+        if(attackScript != null) attackScript.SetAttackActive(false);
+    }
 
-    // --- DAMAGE DETECTION ---
+    // --- JUMP LOGIC ---
     void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground")) isGrounded = true;
-
-        // If we hit something while charging...
-        if (isCharging)
-        {
-            // Check if the object we hit has the Damage System interface
-            if (collision.gameObject.TryGetComponent(out IDamageable victim))
-            {
-                DamageData data = new DamageData {
-                    amount = damageAmount,
-                    source = gameObject,
-                    hitDirection = transform.forward
-                };
-                
-                Debug.Log(victim);
-                victim.TakeDamage(data);
-                isCharging = false; // Stop charging after one hit
-            }
-        }
     }
 
     void OnCollisionExit(Collision collision)
