@@ -16,6 +16,11 @@ public class NewMovement : MonoBehaviour
     [Header("Scripts")]
     private Attack attackScript;
 
+    [Header("Cooldown")]
+    public float attackCooldown = 1.0f; // 1 second between attacks
+    private float nextAttackTime = 0f;
+
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -44,11 +49,10 @@ public class NewMovement : MonoBehaviour
     // --- THE CHARGE ATTACK ---
     void OnAttack(InputValue value)
     {
-        if (value.isPressed && attackScript != null)
+        if (value.isPressed && attackScript != null && Time.time >= nextAttackTime)
         {
-            // Flip switch ON
             attackScript.SetAttackActive(true);
-            
+            nextAttackTime = Time.time + attackCooldown;
             rb.AddForce(transform.forward * chargePower, ForceMode.Impulse);
             Invoke(nameof(EndCharge), 0.5f);
         }
