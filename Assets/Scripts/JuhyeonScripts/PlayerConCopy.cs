@@ -8,12 +8,13 @@ public class PlayerConCopy : MonoBehaviour
     public int totalJumpsAllowed = 2;
     private int jumpsRemaining;
     public float jumpHeight = 10;
-    public float speed = 10;
+    public float speed = 50;
     private Rigidbody rb;
     private float movementX;
     private float movementY;
     public float attackRange = 5f;
-    public GameObject hitEffectPrefab;
+    public ParticleSystem hitEffect;
+    public AudioClip attackSound;
 
 
     void Start()
@@ -54,32 +55,19 @@ public class PlayerConCopy : MonoBehaviour
 
     void OnAttack(InputValue value)
     {
-        if (value.isPressed)
+        if (!value.isPressed) return;
+
+        hitEffect.Play();
+        AudioSource.PlayClipAtPoint(attackSound, transform.position);
+
+        GameObject[] allBosses = GameObject.FindGameObjectsWithTag("Boss");
+
+        foreach (GameObject bossObj in allBosses)
         {
-            // 1. Always spawn the effect in front of the ghost
-            // Adjust the '2.0f' to move it further or closer to the ghost's face
-            Vector3 spawnPosition = transform.position + (transform.forward * 0.7f);
-            
-            // Adjust the height (Y) if your ghost is floating
-            spawnPosition.y += 1.0f; 
-
-            // Spawn the effect and store it in a variable called 'effect'
-            GameObject effect = Instantiate(hitEffectPrefab, spawnPosition, Quaternion.identity);
-
-            // Tell Unity to automatically delete 'effect' after 0.5 seconds
-            Destroy(effect, 0.5f);
-
-            // 2. Check for the Boss damage separately
-            GameObject boss = GameObject.FindGameObjectWithTag("Boss");
-            if (boss != null)
-            {
-                float distance = Vector3.Distance(transform.position, boss.transform.position);
-                if (distance < attackRange)
-                {
-                    boss.GetComponent<BossScript>().TakeDamage(10f);
-                }
-            }
+            float distance = Vector3.Distance(transform.position, bossObj.transform.position);
+            if (distance <= attackRange) bossObj.GetComponent<NewBossScript>().TakeDamage(10f, transform.forward);
         }
+
     }
 
     void OnCollisionEnter(Collision collision)
