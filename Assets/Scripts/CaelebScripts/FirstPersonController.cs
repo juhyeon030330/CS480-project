@@ -97,9 +97,11 @@ public class FirstPersonController : MonoBehaviour
     public bool enableJump = true;
     public KeyCode jumpKey = KeyCode.Space;
     public float jumpPower = 5f;
+    public float maxCoyoteTime = 0.2f;
 
     // Internal Variables
     private bool isGrounded = false;
+    private float coyoteTimer;
 
     #endregion
 
@@ -170,7 +172,7 @@ public class FirstPersonController : MonoBehaviour
 
         sprintBarCG = GetComponentInChildren<CanvasGroup>();
 
-        if(useSprintBar)
+        if (useSprintBar)
         {
             sprintBarBG.gameObject.SetActive(true);
             sprintBar.gameObject.SetActive(true);
@@ -184,7 +186,7 @@ public class FirstPersonController : MonoBehaviour
             sprintBarBG.rectTransform.sizeDelta = new Vector3(sprintBarWidth, sprintBarHeight, 0f);
             sprintBar.rectTransform.sizeDelta = new Vector3(sprintBarWidth - 2, sprintBarHeight - 2, 0f);
 
-            if(hideBarWhenFull)
+            if (hideBarWhenFull)
             {
                 sprintBarCG.alpha = 0;
             }
@@ -326,7 +328,7 @@ public class FirstPersonController : MonoBehaviour
         #region Jump
 
         // Gets input and calls jump method
-        if(enableJump && Input.GetKeyDown(jumpKey) && isGrounded)
+        if(enableJump && Input.GetKeyDown(jumpKey) && coyoteTimer > 0.0f)
         {
             Jump();
         }
@@ -434,10 +436,24 @@ public class FirstPersonController : MonoBehaviour
                 velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
                 velocityChange.y = 0;
 
-                rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                // air acceleration is gradual; ground acceleration is instant
+                if (!isGrounded)
+                    rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                else
+                {
+                    rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
+                }
             }
         }
 
+        if (isGrounded)
+        {
+            coyoteTimer = maxCoyoteTime;
+        }
+        else if (coyoteTimer > 0.0f)
+        {
+            coyoteTimer -= Time.deltaTime;
+        }
         #endregion
     }
 
@@ -462,10 +478,11 @@ public class FirstPersonController : MonoBehaviour
     private void Jump()
     {
         // Adds force to the player rigidbody to jump
-        if (isGrounded)
+        if (coyoteTimer > 0.0f)
         {
-            rb.AddForce(0f, jumpPower, 0f, ForceMode.Impulse);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
             isGrounded = false;
+            coyoteTimer = 0.0f;
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
