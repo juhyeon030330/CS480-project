@@ -106,3 +106,18 @@ InitTestScene*.unity*
 .history/
 *.code-workspace
 
+# Ignore local Project Settings that change based on your editor layout
+/[Pp]roject[Ss]ettings/ProjectSettings.asset
+/[Pp]roject[Ss]ettings/EditorBuildSettings.asset
+# (Optional) if you see ProjectSettings.json specifically:
+/[Pp]roject[Ss]ettings/*.json
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+ProjectSettings/Packages/com.unity.probuilder/Settings.json

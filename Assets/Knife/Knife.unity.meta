@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e5c154e5cb3d3334a8afaee5a4900c99
+timeCreated: 1554668286
+licenseType: Store
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 143769
+  packageName: Knife
+  packageVersion: 1.0
+  assetPath: Assets/Knife/Knife.unity
+  uploadId: 304547
