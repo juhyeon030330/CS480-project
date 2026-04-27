@@ -101,6 +101,8 @@ public class FirstPersonController : MonoBehaviour
     public float maxCoyoteTime = 0.2f;
     public float maxAirControl = 5f;
     public float airAcceleration = 5f;
+    public float onHitPopUp = 7f;
+    public float onHitPopBack = 2f;
 
     // Internal Variables
     private bool isGrounded = false;
@@ -108,6 +110,7 @@ public class FirstPersonController : MonoBehaviour
     private bool isPouncing = false;
     private float coyoteTimer;
     private Vector3 airControlCap;
+
 
     #endregion
 
@@ -159,12 +162,12 @@ public class FirstPersonController : MonoBehaviour
 
     void Start()
     {
-        if(lockCursor)
+        if (lockCursor)
         {
             Cursor.lockState = CursorLockMode.Locked;
         }
 
-        if(crosshair)
+        if (crosshair)
         {
             crosshairObject.sprite = crosshairImage;
             crosshairObject.color = crosshairColor;
@@ -215,7 +218,7 @@ public class FirstPersonController : MonoBehaviour
         #region Camera
 
         // Control camera movement
-        if(cameraCanMove)
+        if (cameraCanMove)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
 
@@ -242,7 +245,7 @@ public class FirstPersonController : MonoBehaviour
         {
             // Changes isZoomed when key is pressed
             // Behavior for toogle zoom
-            if(Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
+            if (Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
             {
                 if (!isZoomed)
                 {
@@ -256,24 +259,24 @@ public class FirstPersonController : MonoBehaviour
 
             // Changes isZoomed when key is pressed
             // Behavior for hold to zoom
-            if(holdToZoom && !isSprinting)
+            if (holdToZoom && !isSprinting)
             {
-                if(Input.GetKeyDown(zoomKey))
+                if (Input.GetKeyDown(zoomKey))
                 {
                     isZoomed = true;
                 }
-                else if(Input.GetKeyUp(zoomKey))
+                else if (Input.GetKeyUp(zoomKey))
                 {
                     isZoomed = false;
                 }
             }
 
             // Lerps camera.fieldOfView to allow for a smooth transistion
-            if(isZoomed)
+            if (isZoomed)
             {
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
             }
-            else if(!isZoomed && !isSprinting)
+            else if (!isZoomed && !isSprinting)
             {
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
             }
@@ -284,15 +287,15 @@ public class FirstPersonController : MonoBehaviour
 
         #region Sprint
 
-        if(enableSprint)
+        if (enableSprint)
         {
-            if(isSprinting)
+            if (isSprinting)
             {
                 isZoomed = false;
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
 
                 // Drain sprint remaining while sprinting
-                if(!unlimitedSprint)
+                if (!unlimitedSprint)
                 {
                     sprintRemaining -= 1 * Time.deltaTime;
                     if (sprintRemaining <= 0)
@@ -310,7 +313,7 @@ public class FirstPersonController : MonoBehaviour
 
             // Handles sprint cooldown 
             // When sprint remaining == 0 stops sprint ability until hitting cooldown
-            if(isSprintCooldown)
+            if (isSprintCooldown)
             {
                 sprintCooldown -= 1 * Time.deltaTime;
                 if (sprintCooldown <= 0)
@@ -324,7 +327,7 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // Handles sprintBar 
-            if(useSprintBar && !unlimitedSprint)
+            if (useSprintBar && !unlimitedSprint)
             {
                 float sprintRemainingPercent = sprintRemaining / sprintDuration;
                 sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
@@ -345,7 +348,7 @@ public class FirstPersonController : MonoBehaviour
         {
             Dive();
         }
-        
+
         if (isGrounded)
         {
             isDiving = false;
@@ -358,17 +361,17 @@ public class FirstPersonController : MonoBehaviour
 
         if (enableCrouch)
         {
-            if(Input.GetKeyDown(crouchKey) && !holdToCrouch)
+            if (Input.GetKeyDown(crouchKey) && !holdToCrouch)
             {
                 Crouch();
             }
-            
-            if(Input.GetKeyDown(crouchKey) && holdToCrouch)
+
+            if (Input.GetKeyDown(crouchKey) && holdToCrouch)
             {
                 isCrouched = false;
                 Crouch();
             }
-            else if(Input.GetKeyUp(crouchKey) && holdToCrouch)
+            else if (Input.GetKeyUp(crouchKey) && holdToCrouch)
             {
                 isCrouched = true;
                 Crouch();
@@ -379,7 +382,7 @@ public class FirstPersonController : MonoBehaviour
 
         CheckGround();
 
-        if(enableHeadBob)
+        if (enableHeadBob)
         {
             HeadBob();
         }
@@ -446,7 +449,7 @@ public class FirstPersonController : MonoBehaviour
                     sprintBarCG.alpha -= 3 * Time.deltaTime;
                 }
 
-                
+
 
                 // // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rb.linearVelocity;
@@ -459,7 +462,7 @@ public class FirstPersonController : MonoBehaviour
                 if (!isGrounded)
                 {
                     targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
-                    Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);;
+                    Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);
                     if ((targetVelocity + airControlCap).sqrMagnitude > maxAirControl * maxAirControl)
                     {
 
@@ -476,8 +479,7 @@ public class FirstPersonController : MonoBehaviour
                 {
                     targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
                     rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
-                    airControlCap.x = 0;
-                    airControlCap.z = 0;
+                    ResetAirControl();
                 }
             }
         }
@@ -527,12 +529,12 @@ public class FirstPersonController : MonoBehaviour
             Crouch();
         }
     }
-    
+
     private void Dive()
     {
         Vector3 cam_angle = Vector3.Normalize(playerCamera.transform.forward);
         Vector3 player_dir = Vector3.Normalize(rb.transform.forward);
-        
+
         if (cam_angle.y > 0.0f)
         {
             // pounce
@@ -551,7 +553,7 @@ public class FirstPersonController : MonoBehaviour
     {
         // Stands player up to full height
         // Brings walkSpeed back up to original speed
-        if(isCrouched)
+        if (isCrouched)
         {
             transform.localScale = new Vector3(originalScale.x, originalScale.y, originalScale.z);
             walkSpeed /= speedReduction;
@@ -571,10 +573,10 @@ public class FirstPersonController : MonoBehaviour
 
     private void HeadBob()
     {
-        if(isWalking)
+        if (isWalking)
         {
             // Calculates HeadBob speed during sprint
-            if(isSprinting)
+            if (isSprinting)
             {
                 timer += Time.deltaTime * (bobSpeed + sprintSpeed);
             }
@@ -596,6 +598,33 @@ public class FirstPersonController : MonoBehaviour
             // Resets when play stops moving
             timer = 0;
             joint.localPosition = new Vector3(Mathf.Lerp(joint.localPosition.x, jointOriginalPos.x, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.y, jointOriginalPos.y, Time.deltaTime * bobSpeed), Mathf.Lerp(joint.localPosition.z, jointOriginalPos.z, Time.deltaTime * bobSpeed));
+        }
+    }
+
+    private void ResetAirControl()
+    {
+        airControlCap.x = 0;
+        airControlCap.y = 0;
+        airControlCap.z = 0;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        // dive bounce up
+        if (other.gameObject.CompareTag("Enemy") && (isDiving || isPouncing))
+        {
+            isDiving = false;
+            isPouncing = false;
+            ResetAirControl();
+            
+            Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
+            dirToEnemy.y = 0;
+            dirToEnemy.Normalize();
+            dirToEnemy *= -onHitPopBack;
+            dirToEnemy.y = onHitPopUp;
+            rb.linearVelocity = dirToEnemy;
+            
+            // TODO: Damage the enemy here.
         }
     }
 }
