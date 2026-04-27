@@ -99,12 +99,15 @@ public class FirstPersonController : MonoBehaviour
     public float jumpPower = 5f;
     public float divePower = 20f;
     public float maxCoyoteTime = 0.2f;
+    public float maxAirControl = 5f;
+    public float airAcceleration = 5f;
 
     // Internal Variables
     private bool isGrounded = false;
     private bool isDiving = false;
     private bool isPouncing = false;
     private float coyoteTimer;
+    private Vector3 airControlCap;
 
     #endregion
 
@@ -199,6 +202,8 @@ public class FirstPersonController : MonoBehaviour
             sprintBarBG.gameObject.SetActive(false);
             sprintBar.gameObject.SetActive(false);
         }
+
+        airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
 
         #endregion
     }
@@ -441,7 +446,7 @@ public class FirstPersonController : MonoBehaviour
                     sprintBarCG.alpha -= 3 * Time.deltaTime;
                 }
 
-                targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
+                
 
                 // // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rb.linearVelocity;
@@ -452,10 +457,27 @@ public class FirstPersonController : MonoBehaviour
 
                 // air acceleration is gradual; ground acceleration is instant
                 if (!isGrounded)
-                    rb.AddForce(targetVelocity * Time.deltaTime, ForceMode.VelocityChange);
+                {
+                    targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
+                    Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);;
+                    if ((targetVelocity + airControlCap).sqrMagnitude > maxAirControl * maxAirControl)
+                    {
+
+                        airControlCap = (targetVelocity + airControlCap) / (targetVelocity + airControlCap).magnitude * maxAirControl;
+                    }
+                    else
+                    {
+                        airControlCap = targetVelocity + airControlCap;
+                    }
+                    moveVec = airControlCap - moveVec;
+                    rb.AddForce(moveVec, ForceMode.VelocityChange);
+                }
                 else
                 {
+                    targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
                     rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
+                    airControlCap.x = 0;
+                    airControlCap.z = 0;
                 }
             }
         }
