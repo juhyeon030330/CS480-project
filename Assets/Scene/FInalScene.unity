@@ -7018,49 +7018,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e97ea2833d5d4d9b84495a613f23a7e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
---- !u!54 &500455415
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500455405}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!114 &500455416
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 500455405}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d0cc74cf4f7f424f9319ef6a9073e1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossScript2
-  maxHealth: 100
-  currentHealth: 0
-  player: {fileID: 0}
-  moveSpeed: 2
 --- !u!1 &552975363
 GameObject:
   m_ObjectHideFlags: 0
@@ -13415,10 +13372,6 @@ PrefabInstance:
       value: 90
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: HitSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 510ef9a20f01d4f1d9f5f1c3e5541d75, type: 3}
-    - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: divePower
       value: 10
       objectReference: {fileID: 0}
@@ -13442,10 +13395,6 @@ PrefabInstance:
       propertyPath: onHitPopUp
       value: 7
       objectReference: {fileID: 0}
-    - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
-      propertyPath: attackSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 510ef9a20f01d4f1d9f5f1c3e5541d75, type: 3}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: enableCrouch
       value: 0
@@ -13570,7 +13519,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossScript2
   maxHealth: 100
   currentHealth: 0
-  player: {fileID: 0}
+  player: {fileID: 860671854}
   moveSpeed: 2
 --- !u!1 &794614592
 GameObject:
@@ -15004,84 +14953,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1097591109}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1001 &1157707764
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_Name
-      value: Dummy (2)
-      objectReference: {fileID: 0}
-    - target: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_TagString
-      value: Boss
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -4.35
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.712
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.74194
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8089976520473242026, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2069498971}
-    - targetCorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2069498970}
-    - targetCorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2069498976}
-  m_SourcePrefab: {fileID: 100100000, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
 --- !u!1 &1184560208
 GameObject:
   m_ObjectHideFlags: 0
@@ -22155,7 +22026,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BossScript2
   maxHealth: 100
   currentHealth: 0
-  player: {fileID: 0}
+  player: {fileID: 860671854}
   moveSpeed: 2
 --- !u!54 &1764711091
 Rigidbody:
@@ -22226,7 +22097,6 @@ MonoBehaviour:
   attackRange: 5
   hitEffect: {fileID: 569658622}
   attackSound: {fileID: 8300000, guid: 510ef9a20f01d4f1d9f5f1c3e5541d75, type: 3}
-  DiveSound: {fileID: 0}
 --- !u!114 &1766775557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -23509,66 +23379,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1980477990}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &2069498969 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-  m_PrefabInstance: {fileID: 1157707764}
-  m_PrefabAsset: {fileID: 0}
---- !u!54 &2069498970
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069498969}
-  serializedVersion: 5
-  m_Mass: 1
-  m_LinearDamping: 0
-  m_AngularDamping: 0.05
-  m_CenterOfMass: {x: 0, y: 0, z: 0}
-  m_InertiaTensor: {x: 1, y: 1, z: 1}
-  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ImplicitCom: 1
-  m_ImplicitTensor: 1
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 80
-  m_CollisionDetection: 0
---- !u!114 &2069498971
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069498969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1e97ea2833d5d4d9b84495a613f23a7e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
---- !u!114 &2069498976
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2069498969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5d0cc74cf4f7f424f9319ef6a9073e1c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BossScript2
-  maxHealth: 100
-  currentHealth: 0
-  player: {fileID: 0}
-  moveSpeed: 2
 --- !u!1 &2100847561
 GameObject:
   m_ObjectHideFlags: 0
@@ -24552,11 +24362,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
       propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_TagString
-      value: Boss
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6983937393266777392, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
       propertyPath: m_LocalPosition.x
@@ -24598,10 +24404,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8089976520473242026, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      propertyPath: m_IsTrigger
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -24609,12 +24411,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 500455410}
-    - targetCorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 500455415}
-    - targetCorrespondingSourceObject: {fileID: 3077657114186426547, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 500455416}
   m_SourcePrefab: {fileID: 100100000, guid: 2c4f62039c05ab9459feff6a595c67f9, type: 3}
 --- !u!1 &7665792191486522610
 GameObject:
@@ -24778,7 +24574,6 @@ SceneRoots:
   - {fileID: 786534777}
   - {fileID: 569658623}
   - {fileID: 7663897061881177279}
-  - {fileID: 1157707764}
   - {fileID: 672765889}
   - {fileID: 1895787273}
   - {fileID: 1451828966}
