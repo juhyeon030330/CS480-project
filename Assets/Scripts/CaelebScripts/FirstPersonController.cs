@@ -110,6 +110,7 @@ public class FirstPersonController : MonoBehaviour
     private bool isPouncing = false;
     private float coyoteTimer;
     private Vector3 airControlCap;
+    private GameObject lastEnemyThisCombo = null;
 
 
     #endregion
@@ -353,6 +354,7 @@ public class FirstPersonController : MonoBehaviour
         {
             isDiving = false;
             isPouncing = false;
+            lastEnemyThisCombo = null;
         }
 
         #endregion
@@ -518,7 +520,7 @@ public class FirstPersonController : MonoBehaviour
         // Adds force to the player rigidbody to jump
         if (coyoteTimer > 0.0f)
         {
-            rb.AddForce(new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z), ForceMode.VelocityChange);
+            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
             isGrounded = false;
             coyoteTimer = 0.0f;
         }
@@ -538,13 +540,13 @@ public class FirstPersonController : MonoBehaviour
         if (cam_angle.y > 0.0f)
         {
             // pounce
-            rb.linearVelocity = divePower * (cam_angle + player_dir);
+            rb.linearVelocity = divePower * cam_angle;
             isPouncing = true;
         }
         else
         {
             // dive
-            rb.linearVelocity = divePower * (cam_angle + player_dir);
+            rb.linearVelocity = divePower * cam_angle;
             isDiving = true;
         }
     }
@@ -613,18 +615,28 @@ public class FirstPersonController : MonoBehaviour
         // dive bounce up
         if (other.gameObject.CompareTag("Enemy") && (isDiving || isPouncing))
         {
-            isDiving = false;
-            isPouncing = false;
+            // TODO: Damage the enemy here.
+
+
             ResetAirControl();
-            
             Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
             dirToEnemy.y = 0;
             dirToEnemy.Normalize();
             dirToEnemy *= -onHitPopBack;
-            dirToEnemy.y = onHitPopUp;
+            if (lastEnemyThisCombo != other.gameObject)
+            {
+                isDiving = false;
+                isPouncing = false;
+                dirToEnemy.y = onHitPopUp;
+                lastEnemyThisCombo = other.gameObject;
+            }
+            else
+            {
+                dirToEnemy *= 2;
+                dirToEnemy.y = 0;
+            }
             rb.linearVelocity = dirToEnemy;
             
-            // TODO: Damage the enemy here.
         }
     }
 }
