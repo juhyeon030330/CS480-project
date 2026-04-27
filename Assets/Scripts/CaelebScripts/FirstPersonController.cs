@@ -57,7 +57,7 @@ public class FirstPersonController : MonoBehaviour
 
     public bool playerCanMove = true;
     public float walkSpeed = 5f;
-    public float maxVelocityChange = 10f;
+    public float maxVelocityChange = 5f;
 
     // Internal Variables
     private bool isWalking = false;
@@ -97,10 +97,13 @@ public class FirstPersonController : MonoBehaviour
     public bool enableJump = true;
     public KeyCode jumpKey = KeyCode.Space;
     public float jumpPower = 5f;
+    public float divePower = 20f;
     public float maxCoyoteTime = 0.2f;
 
     // Internal Variables
     private bool isGrounded = false;
+    private bool isDiving = false;
+    private bool isPouncing = false;
     private float coyoteTimer;
 
     #endregion
@@ -328,9 +331,20 @@ public class FirstPersonController : MonoBehaviour
         #region Jump
 
         // Gets input and calls jump method
-        if(enableJump && Input.GetKeyDown(jumpKey) && coyoteTimer > 0.0f)
+        if (enableJump && Input.GetKeyDown(jumpKey) && coyoteTimer > 0.0f)
         {
             Jump();
+        }
+
+        else if (enableJump && Input.GetKeyDown(jumpKey) && !isDiving && !isPouncing && coyoteTimer <= 0.0f)
+        {
+            Dive();
+        }
+        
+        if (isGrounded)
+        {
+            isDiving = false;
+            isPouncing = false;
         }
 
         #endregion
@@ -429,16 +443,16 @@ public class FirstPersonController : MonoBehaviour
 
                 targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
 
-                // Apply a force that attempts to reach our target velocity
+                // // Apply a force that attempts to reach our target velocity
                 Vector3 velocity = rb.linearVelocity;
-                Vector3 velocityChange = (targetVelocity - velocity);
-                velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-                velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0;
+                // Vector3 velocityChange = (targetVelocity - velocity);
+                // velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+                // velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+                // velocityChange.y = 0;
 
                 // air acceleration is gradual; ground acceleration is instant
                 if (!isGrounded)
-                    rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                    rb.AddForce(targetVelocity * Time.deltaTime, ForceMode.VelocityChange);
                 else
                 {
                     rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
@@ -480,15 +494,34 @@ public class FirstPersonController : MonoBehaviour
         // Adds force to the player rigidbody to jump
         if (coyoteTimer > 0.0f)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
+            rb.AddForce(new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z), ForceMode.VelocityChange);
             isGrounded = false;
             coyoteTimer = 0.0f;
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
-        if(isCrouched && !holdToCrouch)
+        if (isCrouched && !holdToCrouch)
         {
             Crouch();
+        }
+    }
+    
+    private void Dive()
+    {
+        Vector3 cam_angle = Vector3.Normalize(playerCamera.transform.forward);
+        Vector3 player_dir = Vector3.Normalize(rb.transform.forward);
+        
+        if (cam_angle.y > 0.0f)
+        {
+            // pounce
+            rb.linearVelocity = divePower * (cam_angle + player_dir);
+            isPouncing = true;
+        }
+        else
+        {
+            // dive
+            rb.linearVelocity = divePower * (cam_angle + player_dir);
+            isDiving = true;
         }
     }
 
@@ -548,6 +581,7 @@ public class FirstPersonController : MonoBehaviour
 
 
 // Custom Editor
+/*
 #if UNITY_EDITOR
     [CustomEditor(typeof(FirstPersonController)), InitializeOnLoadAttribute]
     public class FirstPersonControllerEditor : Editor
@@ -757,3 +791,4 @@ public class FirstPersonController : MonoBehaviour
 }
 
 #endif
+*/
