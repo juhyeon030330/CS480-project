@@ -16,6 +16,7 @@ using UnityEngine.UI;
 
 public class FirstPersonController : MonoBehaviour
 {
+    public AudioClip HitSound;
     private Rigidbody rb;
 
     #region Camera Movement Variables
@@ -535,6 +536,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Dive()
     {
+
         Vector3 cam_angle = Vector3.Normalize(playerCamera.transform.forward);
         Vector3 player_dir = Vector3.Normalize(rb.transform.forward);
 
@@ -551,6 +553,8 @@ public class FirstPersonController : MonoBehaviour
             isDiving = true;
         }
     }
+
+
 
     private void Crouch()
     {

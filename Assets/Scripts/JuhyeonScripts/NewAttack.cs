@@ -22,6 +22,28 @@ public class NewAttack : MonoBehaviour
         rb = GetComponent<Rigidbody>();
     }
 
+    public AudioClip DiveSound;
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Boss"))
+        {
+            Debug.Log("hello0");
+            Rigidbody enemyRb = collision.gameObject.GetComponent<Rigidbody>();
+
+            Debug.Log(rb.linearVelocity.y);
+            if (rb.linearVelocity.y >= -0.05f) return;
+            if (enemyRb != null)
+            {
+                // 1. The Knockback
+                enemyRb.AddForce(transform.forward * 500f + Vector3.up * 100f);
+                
+                // 2. The Sound
+                AudioSource.PlayClipAtPoint(attackSound, collision.transform.position);
+            }
+        }
+    }
+
 
     void OnAttack(InputValue value)
     {
