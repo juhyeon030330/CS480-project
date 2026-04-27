@@ -618,6 +618,7 @@ GameObject:
   m_Component:
   - component: {fileID: 115692536}
   - component: {fileID: 115692539}
+  - component: {fileID: 115692540}
   m_Layer: 0
   m_Name: Dummy Enemy 1
   m_TagString: Boss
@@ -634,7 +635,7 @@ Transform:
   m_GameObject: {fileID: 115692535}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.81, y: -0.02, z: 3.33}
+  m_LocalPosition: {x: 3.88, y: -0.02, z: 3.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -660,6 +661,27 @@ MonoBehaviour:
   currentHealth: 0
   player: {fileID: 860671854}
   moveSpeed: 2
+--- !u!135 &115692540
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 115692535}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.4
+  m_Center: {x: 0, y: 1.78, z: 0}
 --- !u!1 &143033624
 GameObject:
   m_ObjectHideFlags: 0
@@ -5830,7 +5852,7 @@ GameObject:
   - component: {fileID: 257723305}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6281,7 +6303,7 @@ GameObject:
   - component: {fileID: 363259708}
   m_Layer: 0
   m_Name: Body
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -8724,7 +8746,7 @@ GameObject:
   - component: {fileID: 963670282}
   m_Layer: 0
   m_Name: Head
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -10226,7 +10248,7 @@ GameObject:
   - component: {fileID: 1412826348}
   m_Layer: 0
   m_Name: Head
-  m_TagString: Enemy
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -16364,6 +16386,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1842793728}
   - component: {fileID: 1842793731}
+  - component: {fileID: 1842793732}
   m_Layer: 0
   m_Name: Dummy Enemy 2
   m_TagString: Boss
@@ -16406,6 +16429,27 @@ MonoBehaviour:
   currentHealth: 0
   player: {fileID: 860671854}
   moveSpeed: 2
+--- !u!135 &1842793732
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1842793727}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.4
+  m_Center: {x: 0, y: 1.78, z: 0}
 --- !u!1 &1845166433
 GameObject:
   m_ObjectHideFlags: 0
