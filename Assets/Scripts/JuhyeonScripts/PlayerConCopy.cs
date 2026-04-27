@@ -65,7 +65,8 @@ public class PlayerConCopy : MonoBehaviour
         foreach (GameObject bossObj in allBosses)
         {
             float distance = Vector3.Distance(transform.position, bossObj.transform.position);
-            if (distance <= attackRange) bossObj.GetComponent<NewBossScript>().TakeDamage(10f, transform.forward);
+            //if (distance <= attackRange) bossObj.GetComponent<NewBossScript>().TakeDamage(10f, transform.forward);
+            // Must comment out above statement because of outdataed TakeDamage() call
         }
 
     }

@@ -497,7 +497,7 @@ public class FirstPersonController : MonoBehaviour
         #endregion
     }
 
-    // Sets isGrounded based on a raycast sent straigth down from the player object
+    // Sets isGrounded based on a raycast sent straight down from the player object
     private void CheckGround()
     {
         // TODO: Diving directly on top of enemies causes the player to believe that they're grounded, which cancels the dive prematurely.
@@ -614,9 +614,21 @@ public class FirstPersonController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // dive bounce up
-        if (other.gameObject.CompareTag("Enemy") && (isDiving || isPouncing))
+        if ((other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss")) && (isDiving || isPouncing))
         {
-            // TODO: Damage the enemy here.
+            // Build the damage package
+            DamageData dmg = new DamageData
+            {
+                amount = 25f,
+                source = this.gameObject,
+                hitDirection = (other.transform.position - transform.position).normalized
+            };
+
+            // Deal damage
+            if (other.TryGetComponent<IDamageable>(out var target))
+            {
+                target.TakeDamage(dmg);
+            }
 
 
             ResetAirControl();

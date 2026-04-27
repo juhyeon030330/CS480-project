@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class NewBossScript : MonoBehaviour
+public class NewBossScript : MonoBehaviour, IDamageable
 {
     public float maxHealth = 100f;
     public float currentHealth;
@@ -8,20 +8,18 @@ public class NewBossScript : MonoBehaviour
     public Transform player;
     public float moveSpeed = 2f;
 
-    private Rigidbody rb;
-
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
         currentHealth = maxHealth;
     }
 
-    public void TakeDamage(float damage, Vector3 d)
+    public void TakeDamage(DamageData data)
     {
-        currentHealth -= damage;
+        currentHealth -= data.amount;
         Debug.Log("Boss Health: " + currentHealth);
-        Debug.Log(d);
-        rb.AddForce(d * 500 + Vector3.up * 100);
+        Vector3 forceDirection = data.hitDirection * 500f + Vector3.up * 100f;
+        // Simulate physics
+        transform.Translate(forceDirection * Time.deltaTime * 0.01f, Space.World);
 
         if (currentHealth <= 0)
         {
@@ -42,10 +40,7 @@ public class NewBossScript : MonoBehaviour
             transform.LookAt(new Vector3(player.position.x, transform.position.y, player.position.z));
             Vector3 direction = (player.position - transform.position).normalized;
             direction.y = 0;
-            if (Vector3.Distance(transform.position, player.position) > 2f)
-            {
-                rb.MovePosition(transform.position + direction * moveSpeed * Time.fixedDeltaTime);
-            }
+            transform.Translate(Vector3.forward * moveSpeed * Time.fixedDeltaTime);
         }
     }
 
