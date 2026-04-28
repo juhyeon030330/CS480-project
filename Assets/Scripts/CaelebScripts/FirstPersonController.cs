@@ -242,6 +242,7 @@ public class FirstPersonController : MonoBehaviour
 
         #region Camera Zoom
 
+        // Unused
         if (enableZoom)
         {
             // Changes isZoomed when key is pressed
@@ -288,6 +289,7 @@ public class FirstPersonController : MonoBehaviour
 
         #region Sprint
 
+        // Unused
         if (enableSprint)
         {
             if (isSprinting)
@@ -352,6 +354,7 @@ public class FirstPersonController : MonoBehaviour
 
         if (isGrounded)
         {
+            // being grounded cancels dives and pounces, and resets combos.
             isDiving = false;
             isPouncing = false;
             lastEnemyThisCombo = null;
@@ -361,6 +364,7 @@ public class FirstPersonController : MonoBehaviour
 
         #region Crouch
 
+        // Unused
         if (enableCrouch)
         {
             if (Input.GetKeyDown(crouchKey) && !holdToCrouch)
@@ -384,6 +388,7 @@ public class FirstPersonController : MonoBehaviour
 
         CheckGround();
 
+        // Unused
         if (enableHeadBob)
         {
             HeadBob();
@@ -411,6 +416,7 @@ public class FirstPersonController : MonoBehaviour
             }
 
             // All movement calculations shile sprint is active
+            // Unused
             if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
             {
                 targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
@@ -463,22 +469,33 @@ public class FirstPersonController : MonoBehaviour
                 // air acceleration is gradual; ground acceleration is instant
                 if (!isGrounded)
                 {
-                    targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
-                    Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);
-                    if ((targetVelocity + airControlCap).sqrMagnitude > maxAirControl * maxAirControl)
+                    // TODO: Move this to its own function
+                    // In essence, while airborn, our player can add a maximum speed to their trajectory.
+                    // What we do here is we determine the direction to apply acceleration, ensuring that
+                    // the player isn't exceeding this max-speed-vector circle.
+                    targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;   // the force the player wants to apply
+                    Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);                   // (for now) the current spot on the air-control-circle we are
+                    if ((targetVelocity + airControlCap).sqrMagnitude > maxAirControl * maxAirControl)                  // if the result of just adding the force the player wants to apply to the air-control-cap vector
+                                                                                                                        // would leave that inside of the circle, we do that;
+                                                                                                                        // otherwise we clamp to the circle.
+                                                                                                                        // uses sqrMagnitudue to save on unnecessary sqrt calculations.
                     {
-
+                        // clamp air control to the circle
                         airControlCap = (targetVelocity + airControlCap) / (targetVelocity + airControlCap).magnitude * maxAirControl;
                     }
                     else
                     {
+                        // add it straight up
                         airControlCap = targetVelocity + airControlCap;
                     }
+                    // this is slightly obtuse but we *first* update our position inside of the air control circle,
+                    // and *then* use the resulting position in the air control circle to accelerate the player.
                     moveVec = airControlCap - moveVec;
                     rb.AddForce(moveVec, ForceMode.VelocityChange);
                 }
                 else
                 {
+                    // when grounded, we set linearvelocity (makes grounded movement feel more snappy)
                     targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
                     rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
                     ResetAirControl();
@@ -519,6 +536,12 @@ public class FirstPersonController : MonoBehaviour
     private void Jump()
     {
         // Adds force to the player rigidbody to jump
+        // There's a period of time (maxCoyoteTime) that a player can jump after a player stops
+        // being grounded for a reason other than player input (such as walking off of a ledge)
+                                                // coyote time is not an original name; this is a common term for it.
+                                                // Named for Wile E. Coyote, specifically the skit where he runs off
+                                                // of a cliff, and doesn't start falling for a second, letting him
+                                                // turn to the camera and hold up a sign like "help!"
         if (coyoteTimer > 0.0f)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
@@ -536,8 +559,9 @@ public class FirstPersonController : MonoBehaviour
     private void Dive()
     {
         Vector3 cam_angle = Vector3.Normalize(playerCamera.transform.forward);
-        Vector3 player_dir = Vector3.Normalize(rb.transform.forward);
 
+        // Currently, pouncing and diving are different states even though they do the same thing
+        // TODO: Add dive roll, etc.
         if (cam_angle.y > 0.0f)
         {
             // pounce
@@ -552,6 +576,7 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    // Unused.
     private void Crouch()
     {
         // Stands player up to full height
@@ -574,6 +599,7 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    // Unused.
     private void HeadBob()
     {
         if (isWalking)
@@ -631,24 +657,27 @@ public class FirstPersonController : MonoBehaviour
             }
 
 
+            // Reset the air control (See fixedUpdate for more info on air control)
             ResetAirControl();
-            Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
-            dirToEnemy.y = 0;
-            dirToEnemy.Normalize();
+
+
+            Vector3 dirToEnemy = other.gameObject.transform.position - rb.position; // Determine the direction to the enemy
+            dirToEnemy.y = 0;                                                       // Lock the vector to the x-z plane
+            dirToEnemy.Normalize();                                                 // normalize, set its length to be equal to public float onHitPopBack
             dirToEnemy *= -onHitPopBack;
-            if (lastEnemyThisCombo != other.gameObject)
+            if (lastEnemyThisCombo != other.gameObject)                             // if our enemy isn't the one we comboed off last, we can continue
             {
                 isDiving = false;
                 isPouncing = false;
                 dirToEnemy.y = onHitPopUp;
                 lastEnemyThisCombo = other.gameObject;
             }
-            else
+            else                                                                    // otherwise make backwards trajectory flatter and spike the player down; do not refresh dive
             {
                 dirToEnemy *= 2;
                 dirToEnemy.y = 0;
             }
-            rb.linearVelocity = dirToEnemy;
+            rb.linearVelocity = dirToEnemy;                                         // set our velocity to the resulting vector
             
         }
     }
