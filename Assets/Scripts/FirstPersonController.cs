@@ -5,7 +5,7 @@ using UnityEngine;
 public class FirstPersonController : MonoBehaviour
 {
     private Rigidbody rb;
-    public AudioClip DiveSound;
+    public AudioClip DiveSound;  
 
     #region Camera Movement Variables
     public Camera playerCamera;
@@ -15,6 +15,7 @@ public class FirstPersonController : MonoBehaviour
     public float mouseSensitivity = 2f;
     public float maxLookAngle = 50f;
 
+    // Internal Variables
     private float yaw = 0.0f;
     private float pitch = 0.0f;
     #endregion
@@ -35,6 +36,7 @@ public class FirstPersonController : MonoBehaviour
     public float onHitPopUp = 7f;
     public float onHitPopBack = 2f;
 
+    // Internal Variables
     private bool isGrounded = false;
     private bool isDiving = false;
     private bool isPouncing = false;
@@ -53,11 +55,11 @@ public class FirstPersonController : MonoBehaviour
     void Start()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        airControlCap = Vector3.zero;
     }
 
     private void Update()
     {
+        // Control camera movement
         if (cameraCanMove)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
@@ -68,13 +70,13 @@ public class FirstPersonController : MonoBehaviour
             playerCamera.transform.localEulerAngles = new Vector3(pitch, 0, 0);
         }
 
+        // Jump and Dive Logic
         if (enableJump && Input.GetKeyDown(jumpKey))
         {
             if (coyoteTimer > 0.0f) Jump();
-            else if (!isDiving && !isPouncing) 
-            {
+            else if (!isDiving && !isPouncing) {
                 Dive();
-                if (DiveSound != null) AudioSource.PlayClipAtPoint(DiveSound, transform.position);
+                AudioSource.PlayClipAtPoint(DiveSound, transform.position);
             }
         }
 
@@ -97,7 +99,7 @@ public class FirstPersonController : MonoBehaviour
 
             if (!isGrounded)
             {
-                // Air Movement
+                // Air Control Logic
                 targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
                 Vector3 moveVec = airControlCap;
                 
@@ -115,15 +117,14 @@ public class FirstPersonController : MonoBehaviour
             }
             else
             {
-                // Ground Movement 
+                // Ground Movement Logic
                 targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
-                
-
                 rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
                 ResetAirControl();
             }
         }
 
+        // Coyote Timer update
         if (isGrounded) coyoteTimer = maxCoyoteTime;
         else if (coyoteTimer > 0.0f) coyoteTimer -= Time.deltaTime;
     }
@@ -134,15 +135,7 @@ public class FirstPersonController : MonoBehaviour
         Vector3 direction = Vector3.down;
         float distance = .75f;
 
-        if (Physics.Raycast(origin, direction, out RaycastHit hit, distance))
-        {
-            isGrounded = true;
-            Debug.DrawRay(origin, direction * distance, Color.green);
-        }
-        else
-        {
-            isGrounded = false;
-        }
+        isGrounded = Physics.Raycast(origin, direction, distance);
     }
 
     private void Jump()
@@ -154,7 +147,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Dive()
     {
-        Vector3 cam_angle = playerCamera.transform.forward.normalized;
+        Vector3 cam_angle = playerCamera.transform.forward;
         rb.linearVelocity = divePower * cam_angle;
 
         if (cam_angle.y > 0.0f) isPouncing = true;
@@ -168,8 +161,10 @@ public class FirstPersonController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        // Dive bounce logic
         if ((other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss")) && (isDiving || isPouncing))
         {
+            // Build the damage package
             DamageData dmg = new DamageData
             {
                 amount = 25f,
@@ -177,11 +172,13 @@ public class FirstPersonController : MonoBehaviour
                 hitDirection = (other.transform.position - transform.position).normalized
             };
 
+            // Deal damage
             if (other.TryGetComponent<IDamageable>(out var target))
             {
                 target.TakeDamage(dmg);
             }
 
+            // Fix Me! Double flip!
             ResetAirControl();
             Vector3 dirToEnemy = (other.gameObject.transform.position - rb.position);
             dirToEnemy.y = 0;
