@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class DummyBehavior : MonoBehaviour, IDamageable
 {
-    private float maxHealth = 50f;
+    public float maxHealth = 100f;
     private float currentHealth;
 
     void Start() => currentHealth = maxHealth;
