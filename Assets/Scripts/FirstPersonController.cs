@@ -16,6 +16,8 @@ using UnityEngine.UI;
 
 public class FirstPersonController : MonoBehaviour
 {
+    public GameObject hitEffect;
+    public ParticleSystem DiveEffect;
     public AudioClip HitSound;
     public AudioClip DiveSound;
     private Rigidbody rb;
@@ -353,6 +355,7 @@ public class FirstPersonController : MonoBehaviour
         {
             Dive();
             if (DiveSound != null) AudioSource.PlayClipAtPoint(DiveSound, transform.position);
+            if (DiveEffect != null) DiveEffect.Play();
         }
 
         if (isGrounded)
@@ -658,6 +661,8 @@ public class FirstPersonController : MonoBehaviour
             {
                 target.TakeDamage(dmg);
                 if (HitSound != null) AudioSource.PlayClipAtPoint(HitSound, other.transform.position);
+                Vector3 contactPoint = other.ClosestPoint(transform.position);
+                if (hitEffect != null) Instantiate(hitEffect, contactPoint, Quaternion.identity);
             }
 
 
