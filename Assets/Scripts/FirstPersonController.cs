@@ -101,16 +101,18 @@ public class FirstPersonController : MonoBehaviour
     public float maxCoyoteTime = 0.2f;
     public float maxAirControl = 5f;
     public float airAcceleration = 5f;
-    public float onHitPopUp = 7f;
-    public float onHitPopBack = 2f;
+    public float onHitPopUp = 7f;       // Speed at which the PC pops away from the enemy on combo (vert. component)
+    public float onHitPopBack = 2f;     // Speed at which the PC pops away from the enemy on combo (lateral component)
+    public float maxSlide = 0.2f;       // handles the duration of the "slide" state when on ground
 
     // Internal Variables
     private bool isGrounded = false;
     private bool isDiving = false;
     private bool isPouncing = false;
-    private float coyoteTimer;
+    private float coyoteTimer = 0.0f;
     private Vector3 airControlCap;
     private GameObject lastEnemyThisCombo = null;
+    private float slideTimer = 0.0f;                // The internal slide timer
 
 
     #endregion
@@ -207,9 +209,9 @@ public class FirstPersonController : MonoBehaviour
             sprintBar.gameObject.SetActive(false);
         }
 
-        airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
-
         #endregion
+
+        airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
     }
 
     float camRotation;
@@ -356,7 +358,6 @@ public class FirstPersonController : MonoBehaviour
             isPouncing = false;
             lastEnemyThisCombo = null;
         }
-
         #endregion
 
         #region Crouch
@@ -461,7 +462,8 @@ public class FirstPersonController : MonoBehaviour
                 // velocityChange.y = 0;
 
                 // air acceleration is gradual; ground acceleration is instant
-                if (!isGrounded)
+                // When we're in the "slide" state, we use air controls
+                if (!isGrounded || (slideTimer > 0))
                 {
                     targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
                     Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);
@@ -489,10 +491,20 @@ public class FirstPersonController : MonoBehaviour
         if (isGrounded)
         {
             coyoteTimer = maxCoyoteTime;
+            if (slideTimer > 0.0f)
+            {
+                slideTimer -= Time.deltaTime;
+            }
         }
+
         else if (coyoteTimer > 0.0f)
         {
             coyoteTimer -= Time.deltaTime;
+        }
+
+        if (slideTimer < 0.0f)
+        {
+            slideTimer = 0.0f;
         }
         #endregion
     }
@@ -523,6 +535,7 @@ public class FirstPersonController : MonoBehaviour
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
             isGrounded = false;
+            slideTimer = 0.0f;
             coyoteTimer = 0.0f;
         }
 
@@ -543,12 +556,14 @@ public class FirstPersonController : MonoBehaviour
             // pounce
             rb.linearVelocity = divePower * cam_angle;
             isPouncing = true;
+            slideTimer = maxSlide;
         }
         else
         {
             // dive
             rb.linearVelocity = divePower * cam_angle;
             isDiving = true;
+            slideTimer = maxSlide;
         }
     }
 
@@ -614,8 +629,9 @@ public class FirstPersonController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // dive bounce up
-        if ((other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss")) && (isDiving || isPouncing))
+        if ((other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss")) && PlayerCanDoMeleeDamage())
         {
+            // ===== DAMAGE =====
             // Build the damage package
             DamageData dmg = new DamageData
             {
@@ -630,12 +646,21 @@ public class FirstPersonController : MonoBehaviour
                 target.TakeDamage(dmg);
             }
 
+
+            // ===== COMBO AND CONTROL =====
+
+            // Handle Air Control And Combo
             // Fix Me! Double flip!
             ResetAirControl();
             Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
             dirToEnemy.y = 0;
             dirToEnemy.Normalize();
             dirToEnemy *= -onHitPopBack;
+            if (isGrounded)
+            {
+                // Because of how some of the friction works, we have to push backwards more to get the same effect when sliding
+                dirToEnemy *= 2;
+            }
             if (lastEnemyThisCombo != other.gameObject)
             {
                 isDiving = false;
@@ -649,8 +674,16 @@ public class FirstPersonController : MonoBehaviour
                 dirToEnemy.y = 0;
             }
             rb.linearVelocity = dirToEnemy;
-            
+
+            // reset slide timer
+            slideTimer = 0.0f;
+
         }
+    }
+    
+    private bool PlayerCanDoMeleeDamage()
+    {
+        return isDiving || isPouncing || (slideTimer > 0.0f);
     }
 }
 
