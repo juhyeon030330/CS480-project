@@ -105,10 +105,12 @@ public class FirstPersonController : MonoBehaviour
     public float onHitPopBack = 2f;                 // Speed at which the PC pops away from the enemy on combo (lateral component)
     public float maxSlideTime = 0.2f;               // handles the duration of the "slide" state when on ground
     public float maxHitStateTime = 0.2f;            // Max duration after a melee hit where the character is not considered "grounded"
-    public float rollStateLength = 0.8f;            // Seconds of rollstate (Incl. sweet spot) -- do not set to less than maxSlideTime!
-    public float rollStateSweetSpotLength = 0.1f;   // Seconds of rollstate sweet spot
+    public float rollStateLength = 0.6f;            // Seconds of rollstate (Incl. sweet spot) -- do not set to less than maxSlideTime!
+    public float rollStateSweetSpotLength = 0.2f;   // Seconds of rollstate sweet spot
     public float rollSpeed = 15f;                    // Speed of rollstate
-    public float rollPouncePower = 30f;             // Power of roll pounce on sweet spot - Can be high-power because it's mostly lateral
+    public float rollPouncePower = 25f;             // Power of roll pounce on sweet spot - Can be high-power because it's mostly lateral
+    public float rollPounceVert = 0.2f;
+    public float maxPounceDeviation = 45f;          // The maximum angle in degrees that we can deviate from our roll pounce
 
     // Internal Variables
     private bool isGrounded = false;
@@ -365,6 +367,7 @@ public class FirstPersonController : MonoBehaviour
         {
             isDiving = false;
             isPouncing = false;
+            isRollPouncing = false;
         }
         if (isGrounded && isDiving && (rollStateTimer == 0.0f))
         {
@@ -561,6 +564,7 @@ public class FirstPersonController : MonoBehaviour
 
         #region Roll State Time
         // ===== ROLL STATE TIME =====
+        // TODO: Add a drum beat to help determine perfect timing
         if (rollStateTimer > 0.0f)
         {
             rollStateTimer -= elapsed_time;
@@ -596,11 +600,20 @@ public class FirstPersonController : MonoBehaviour
         // Adds force to the player rigidbody to jump
         if (coyoteTimer > 0.0f)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
-            isGrounded = false;
-            slideTimer = 0.0f;
-            coyoteTimer = 0.0f;
-            rollStateTimer = 0.0f;
+            if (0.0f < rollStateTimer && rollStateTimer < rollStateSweetSpotLength)
+            {
+                // If we hit the sweet spot during a roll, we rollpounce!
+                RollPounce();
+            }
+            else
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
+                isGrounded = false;
+                slideTimer = 0.0f;
+                coyoteTimer = 0.0f;
+                rollStateTimer = 0.0f;
+            }
+            
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
@@ -639,10 +652,52 @@ public class FirstPersonController : MonoBehaviour
             // If the player looks straight up, they kinda... don't give roll a direction to go, so we can say "screw you" and not enter the roll state
             return;
         }
+        cam_angle.y = 0;
         cam_angle = Vector3.Normalize(cam_angle);
         rollDirection = cam_angle;
         rollStateTimer = rollStateLength;
     }
+
+    private void RollPounce()
+    {
+        // Set up our roll pounce vectors
+        Vector3 pounce_angle = playerCamera.transform.forward;
+        pounce_angle.y = 0;
+
+        // If the player looks straight up or straight back, they pounce in the direction of their roll
+        if ((pounce_angle.x == 0) && (pounce_angle.z == 0))
+        {
+            pounce_angle = rollDirection;
+        }
+        if (pounce_angle * -1 == rollDirection)
+        {
+            pounce_angle = rollDirection;
+        }
+
+        // otherwise, they pounce  in the direction of their camera, clamped a maximum deviation
+        else
+        {
+            pounce_angle = Vector3.Normalize(pounce_angle);
+            float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
+            if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
+            {
+                pounce_angle = Quaternion.AngleAxis(maxPounceDeviation, Vector3.Cross(rollDirection, pounce_angle)) * rollDirection;
+            }
+        }
+
+        pounce_angle.y = rollPounceVert;
+
+        isGrounded = false;
+        isRollPouncing = true;
+        slideTimer = maxSlideTime;
+        coyoteTimer = 0.0f;
+        rollStateTimer = 0.0f;
+
+        rb.linearVelocity = pounce_angle * rollPouncePower;
+
+
+    }
+
 
     private void Crouch()
     {
@@ -740,6 +795,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 isDiving = false;
                 isPouncing = false;
+                isRollPouncing = false;
                 dirToEnemy.y = onHitPopUp;
                 lastEnemyThisCombo = other.gameObject;
                 hitStateTimer = maxHitStateTime;
@@ -759,7 +815,7 @@ public class FirstPersonController : MonoBehaviour
     
     private bool PlayerCanDoMeleeDamage()
     {
-        return isDiving || isPouncing;
+        return isDiving || isPouncing || isRollPouncing;
     }
 }
 
