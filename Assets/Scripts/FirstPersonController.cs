@@ -492,6 +492,7 @@ public class FirstPersonController : MonoBehaviour
                 }
             }
         }
+        #endregion
 
         UpdateTimers();
     }
@@ -688,15 +689,10 @@ public class FirstPersonController : MonoBehaviour
             ResetAirControl();
             Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
             dirToEnemy.y = 0;
-            if (dirToEnemy.sqrMagnitude() > 0.0f)
+            if (dirToEnemy.sqrMagnitude > 0.0f)
             {
                 dirToEnemy.Normalize();
                 dirToEnemy *= -onHitPopBack;
-            }
-            if (isGrounded)
-            {
-                // Because of how some of the friction works, we have to push backwards more to get the same effect when sliding
-                dirToEnemy *= 2;
             }
             if (lastEnemyThisCombo != other.gameObject)
             {
