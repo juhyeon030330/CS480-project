@@ -654,8 +654,11 @@ public class FirstPersonController : MonoBehaviour
             ResetAirControl();
             Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
             dirToEnemy.y = 0;
-            dirToEnemy.Normalize();
-            dirToEnemy *= -onHitPopBack;
+            if (dirToEnemy.sqrMagnitude() > 0.0f)
+            {
+                dirToEnemy.Normalize();
+                dirToEnemy *= -onHitPopBack;
+            }
             if (isGrounded)
             {
                 // Because of how some of the friction works, we have to push backwards more to get the same effect when sliding
