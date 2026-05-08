@@ -360,7 +360,7 @@ public class FirstPersonController : MonoBehaviour
             Dive();
         }
 
-        if (isGrounded)
+        if (isGrounded && (slideTimer == 0.0f))
         {
             isDiving = false;
             isPouncing = false;
@@ -723,7 +723,7 @@ public class FirstPersonController : MonoBehaviour
     
     private bool PlayerCanDoMeleeDamage()
     {
-        return isDiving || isPouncing || (slideTimer > 0.0f);
+        return isDiving || isPouncing;
     }
 }
 
