@@ -101,20 +101,26 @@ public class FirstPersonController : MonoBehaviour
     public float maxCoyoteTime = 0.2f;
     public float maxAirControl = 5f;
     public float airAcceleration = 5f;
-    public float onHitPopUp = 7f;               // Speed at which the PC pops away from the enemy on combo (vert. component)
-    public float onHitPopBack = 2f;             // Speed at which the PC pops away from the enemy on combo (lateral component)
-    public float maxSlideTime = 0.2f;           // handles the duration of the "slide" state when on ground
-    public float maxHitStateTime = 0.2f;        // Max duration after a melee hit where the character is not considered "grounded"
+    public float onHitPopUp = 7f;                   // Speed at which the PC pops away from the enemy on combo (vert. component)
+    public float onHitPopBack = 2f;                 // Speed at which the PC pops away from the enemy on combo (lateral component)
+    public float maxSlideTime = 0.2f;               // handles the duration of the "slide" state when on ground
+    public float maxHitStateTime = 0.2f;            // Max duration after a melee hit where the character is not considered "grounded"
+    public float rollStateLength = 0.8f;            // Seconds of rollstate (Incl. sweet spot)
+    public float rollStateSweetSpotLength = 0.1f;   // Seconds of rollstate sweet spot
+    public float rollSpeed = 10f;                    // Speed of rollstate
+    public float rollPouncePower = 30f;             // Power of roll pounce on sweet spot - Can be high-power because it's mostly lateral
 
     // Internal Variables
     private bool isGrounded = false;
     private bool isDiving = false;
     private bool isPouncing = false;
+    private bool isRollPouncing = false;
     private float coyoteTimer = 0.0f;
     private Vector3 airControlCap;
     private GameObject lastEnemyThisCombo = null;
     private float slideTimer = 0.0f;                // The internal slide timer
     private float hitStateTimer = 0.0f;             // internal hit state timer -- after damaging an enemy
+    private float rollStateTimer = 0.0f;
 
 
     #endregion
