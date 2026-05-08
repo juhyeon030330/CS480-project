@@ -105,9 +105,9 @@ public class FirstPersonController : MonoBehaviour
     public float onHitPopBack = 2f;                 // Speed at which the PC pops away from the enemy on combo (lateral component)
     public float maxSlideTime = 0.2f;               // handles the duration of the "slide" state when on ground
     public float maxHitStateTime = 0.2f;            // Max duration after a melee hit where the character is not considered "grounded"
-    public float rollStateLength = 0.8f;            // Seconds of rollstate (Incl. sweet spot)
+    public float rollStateLength = 0.8f;            // Seconds of rollstate (Incl. sweet spot) -- do not set to less than maxSlideTime!
     public float rollStateSweetSpotLength = 0.1f;   // Seconds of rollstate sweet spot
-    public float rollSpeed = 10f;                    // Speed of rollstate
+    public float rollSpeed = 15f;                    // Speed of rollstate
     public float rollPouncePower = 30f;             // Power of roll pounce on sweet spot - Can be high-power because it's mostly lateral
 
     // Internal Variables
@@ -121,7 +121,7 @@ public class FirstPersonController : MonoBehaviour
     private float slideTimer = 0.0f;                // The internal slide timer
     private float hitStateTimer = 0.0f;             // internal hit state timer -- after damaging an enemy
     private float rollStateTimer = 0.0f;
-
+    private Vector3 rollDirection;
 
     #endregion
 
@@ -220,6 +220,7 @@ public class FirstPersonController : MonoBehaviour
         #endregion
 
         airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
+        rollDirection = new Vector3(0.0f, 0.0f, 0.0f);
     }
 
     float camRotation;
@@ -365,6 +366,10 @@ public class FirstPersonController : MonoBehaviour
             isDiving = false;
             isPouncing = false;
         }
+        if (isGrounded && isDiving && (rollStateTimer == 0.0f))
+        {
+            Roll();
+        }
         if (isGrounded && (hitStateTimer == 0.0f) && (slideTimer == 0.0f))
         {
             lastEnemyThisCombo = null;
@@ -472,9 +477,15 @@ public class FirstPersonController : MonoBehaviour
                 // velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
                 // velocityChange.y = 0;
 
+                if (rollStateTimer > 0.0f)
+                {
+                    targetVelocity = rollDirection * rollSpeed;
+                    rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
+                    ResetAirControl();
+                }
                 // air acceleration is gradual; ground acceleration is instant
                 // When we're in the "slide" state, we use air controls
-                if (!isGrounded || (slideTimer > 0.0f) || (hitStateTimer > 0.0f))
+                else if (!isGrounded || (slideTimer > 0.0f) || (hitStateTimer > 0.0f))
                 {
                     targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
                     Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);
@@ -548,6 +559,17 @@ public class FirstPersonController : MonoBehaviour
         }
         #endregion
 
+        #region Roll State Time
+        // ===== ROLL STATE TIME =====
+        if (rollStateTimer > 0.0f)
+        {
+            rollStateTimer -= elapsed_time;
+            if (rollStateTimer < 0.0f)
+            {
+                rollStateTimer = 0.0f;
+            } 
+        }
+        #endregion
     }
 
     // Sets isGrounded based on a raycast sent straight down from the player object
@@ -578,6 +600,7 @@ public class FirstPersonController : MonoBehaviour
             isGrounded = false;
             slideTimer = 0.0f;
             coyoteTimer = 0.0f;
+            rollStateTimer = 0.0f;
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
@@ -606,6 +629,19 @@ public class FirstPersonController : MonoBehaviour
             isDiving = true;
             slideTimer = maxSlideTime;
         }
+    }
+
+    private void Roll()
+    {
+        Vector3 cam_angle = playerCamera.transform.forward;
+        if ((cam_angle.x == 0) && (cam_angle.z == 0))
+        {
+            // If the player looks straight up, they kinda... don't give roll a direction to go, so we can say "screw you" and not enter the roll state
+            return;
+        }
+        cam_angle = Vector3.Normalize(cam_angle);
+        rollDirection = cam_angle;
+        rollStateTimer = rollStateLength;
     }
 
     private void Crouch()
