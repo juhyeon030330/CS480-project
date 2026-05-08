@@ -677,6 +677,7 @@ public class FirstPersonController : MonoBehaviour
         // otherwise, they pounce  in the direction of their camera, clamped a maximum deviation
         else
         {
+            // TODO: add a snare hit to show perfect timing!
             pounce_angle = Vector3.Normalize(pounce_angle);
             float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
             if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
