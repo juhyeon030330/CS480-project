@@ -101,9 +101,10 @@ public class FirstPersonController : MonoBehaviour
     public float maxCoyoteTime = 0.2f;
     public float maxAirControl = 5f;
     public float airAcceleration = 5f;
-    public float onHitPopUp = 7f;       // Speed at which the PC pops away from the enemy on combo (vert. component)
-    public float onHitPopBack = 2f;     // Speed at which the PC pops away from the enemy on combo (lateral component)
-    public float maxSlide = 0.2f;       // handles the duration of the "slide" state when on ground
+    public float onHitPopUp = 7f;               // Speed at which the PC pops away from the enemy on combo (vert. component)
+    public float onHitPopBack = 2f;             // Speed at which the PC pops away from the enemy on combo (lateral component)
+    public float maxSlideTime = 0.2f;           // handles the duration of the "slide" state when on ground
+    public float maxHitStateTime = 0.2f;        // Max duration after a melee hit where the character is not considered "grounded"
 
     // Internal Variables
     private bool isGrounded = false;
@@ -113,6 +114,7 @@ public class FirstPersonController : MonoBehaviour
     private Vector3 airControlCap;
     private GameObject lastEnemyThisCombo = null;
     private float slideTimer = 0.0f;                // The internal slide timer
+    private float hitStateTimer = 0.0f;             // internal hit state timer -- after damaging an enemy
 
 
     #endregion
@@ -356,6 +358,9 @@ public class FirstPersonController : MonoBehaviour
         {
             isDiving = false;
             isPouncing = false;
+        }
+        if (isGrounded && (hitStateTimer == 0.0f) && (slideTimer == 0.0f))
+        {
             lastEnemyThisCombo = null;
         }
         #endregion
@@ -463,7 +468,7 @@ public class FirstPersonController : MonoBehaviour
 
                 // air acceleration is gradual; ground acceleration is instant
                 // When we're in the "slide" state, we use air controls
-                if (!isGrounded || (slideTimer > 0))
+                if (!isGrounded || (slideTimer > 0.0f) || (hitStateTimer > 0.0f))
                 {
                     targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;
                     Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);
@@ -488,25 +493,54 @@ public class FirstPersonController : MonoBehaviour
             }
         }
 
+        UpdateTimers();
+    }
+
+    private void UpdateTimers()
+    {
+        float elapsed_time = Time.deltaTime;
+
+
+        #region Coyote Time
+        // ===== COYOTE TIME =====
         if (isGrounded)
         {
             coyoteTimer = maxCoyoteTime;
-            if (slideTimer > 0.0f)
-            {
-                slideTimer -= Time.deltaTime;
-            }
         }
-
         else if (coyoteTimer > 0.0f)
         {
-            coyoteTimer -= Time.deltaTime;
-        }
-
-        if (slideTimer < 0.0f)
-        {
-            slideTimer = 0.0f;
+            coyoteTimer -= elapsed_time;
+            if (coyoteTimer < 0.0f)
+            {
+                coyoteTimer = 0.0f;
+            }
         }
         #endregion
+
+        #region Slide Time
+        // ===== SLIDE TIME =====
+        if (isGrounded && slideTimer > 0.0f)
+        {
+            slideTimer -= elapsed_time;
+            if (slideTimer < 0.0f)
+            {
+                slideTimer = 0.0f;
+            }
+        }
+        #endregion
+
+        #region Hit State Time
+        // ===== HIT STATE TIME =====
+        if (hitStateTimer > 0.0f)
+        {
+            hitStateTimer -= elapsed_time;
+            if (hitStateTimer < 0.0f)
+            {
+                hitStateTimer = 0.0f;
+            }
+        }
+        #endregion
+
     }
 
     // Sets isGrounded based on a raycast sent straight down from the player object
@@ -556,14 +590,14 @@ public class FirstPersonController : MonoBehaviour
             // pounce
             rb.linearVelocity = divePower * cam_angle;
             isPouncing = true;
-            slideTimer = maxSlide;
+            slideTimer = maxSlideTime;
         }
         else
         {
             // dive
             rb.linearVelocity = divePower * cam_angle;
             isDiving = true;
-            slideTimer = maxSlide;
+            slideTimer = maxSlideTime;
         }
     }
 
@@ -670,6 +704,7 @@ public class FirstPersonController : MonoBehaviour
                 isPouncing = false;
                 dirToEnemy.y = onHitPopUp;
                 lastEnemyThisCombo = other.gameObject;
+                hitStateTimer = maxHitStateTime;
             }
             else
             {
