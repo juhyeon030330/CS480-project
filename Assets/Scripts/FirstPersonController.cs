@@ -842,6 +842,7 @@ public class FirstPersonController : MonoBehaviour
             }
             rb.linearVelocity = dirToEnemy;
             slideTimer = 0.0f;
+            rollStateTimer = 0.0f;
 
         }
     }
