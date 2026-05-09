@@ -105,17 +105,29 @@ public class FirstPersonController : MonoBehaviour
     public float maxCoyoteTime = 0.2f;
     public float maxAirControl = 5f;
     public float airAcceleration = 5f;
-    public float onHitPopUp = 7f;
-    public float onHitPopBack = 2f;
+    public float onHitPopUp = 7f;                   // Speed at which the PC pops away from the enemy on combo (vert. component)
+    public float onHitPopBack = 2f;                 // Speed at which the PC pops away from the enemy on combo (lateral component)
+    public float maxSlideTime = 0.2f;               // handles the duration of the "slide" state when on ground
+    public float maxHitStateTime = 0.2f;            // Max duration after a melee hit where the character is not considered "grounded"
+    public float rollStateLength = 0.6f;            // Seconds of rollstate (Incl. sweet spot) -- do not set to less than maxSlideTime!
+    public float rollStateSweetSpotLength = 0.2f;   // Seconds of rollstate sweet spot
+    public float rollSpeed = 15f;                    // Speed of rollstate
+    public float rollPouncePower = 25f;             // Power of roll pounce on sweet spot - Can be high-power because it's mostly lateral
+    public float rollPounceVert = 0.2f;
+    public float maxPounceDeviation = 45f;          // The maximum angle in degrees that we can deviate from our roll pounce
 
     // Internal Variables
     private bool isGrounded = false;
     private bool isDiving = false;
     private bool isPouncing = false;
-    private float coyoteTimer;
+    private bool isRollPouncing = false;
+    private float coyoteTimer = 0.0f;
     private Vector3 airControlCap;
     private GameObject lastEnemyThisCombo = null;
-
+    private float slideTimer = 0.0f;                // The internal slide timer
+    private float hitStateTimer = 0.0f;             // internal hit state timer -- after damaging an enemy
+    private float rollStateTimer = 0.0f;
+    private Vector3 rollDirection;
 
     #endregion
 
@@ -211,9 +223,10 @@ public class FirstPersonController : MonoBehaviour
             sprintBar.gameObject.SetActive(false);
         }
 
-        airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
-
         #endregion
+
+        airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
+        rollDirection = new Vector3(0.0f, 0.0f, 0.0f);
     }
 
     float camRotation;
@@ -354,18 +367,23 @@ public class FirstPersonController : MonoBehaviour
         else if (enableJump && Input.GetKeyDown(jumpKey) && !isDiving && !isPouncing && coyoteTimer <= 0.0f)
         {
             Dive();
-            if (DiveSound != null) AudioSource.PlayClipAtPoint(DiveSound, transform.position);
-            if (DiveEffect != null) DiveEffect.Play();
         }
 
-        if (isGrounded)
+        if (isGrounded && (slideTimer == 0.0f))
         {
             // being grounded cancels dives and pounces, and resets combos.
             isDiving = false;
             isPouncing = false;
+            isRollPouncing = false;
+        }
+        if (isGrounded && isDiving && (rollStateTimer == 0.0f))
+        {
+            Roll();
+        }
+        if (isGrounded && (hitStateTimer == 0.0f) && (slideTimer == 0.0f))
+        {
             lastEnemyThisCombo = null;
         }
-
         #endregion
 
         #region Crouch
@@ -472,8 +490,15 @@ public class FirstPersonController : MonoBehaviour
                 // velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
                 // velocityChange.y = 0;
 
+                if (rollStateTimer > 0.0f)
+                {
+                    targetVelocity = rollDirection * rollSpeed;
+                    rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
+                    ResetAirControl();
+                }
                 // air acceleration is gradual; ground acceleration is instant
-                if (!isGrounded)
+                // When we're in the "slide" state, we use air controls
+                else if (!isGrounded || (slideTimer > 0.0f) || (hitStateTimer > 0.0f))
                 {
                     // TODO: Move this to its own function
                     // In essence, while airborn, our player can add a maximum speed to their trajectory.
@@ -508,14 +533,66 @@ public class FirstPersonController : MonoBehaviour
                 }
             }
         }
+        #endregion
 
+        UpdateTimers();
+    }
+
+    private void UpdateTimers()
+    {
+        float elapsed_time = Time.deltaTime;
+
+
+        #region Coyote Time
+        // ===== COYOTE TIME =====
         if (isGrounded)
         {
             coyoteTimer = maxCoyoteTime;
         }
         else if (coyoteTimer > 0.0f)
         {
-            coyoteTimer -= Time.deltaTime;
+            coyoteTimer -= elapsed_time;
+            if (coyoteTimer < 0.0f)
+            {
+                coyoteTimer = 0.0f;
+            }
+        }
+        #endregion
+
+        #region Slide Time
+        // ===== SLIDE TIME =====
+        if (isGrounded && slideTimer > 0.0f)
+        {
+            slideTimer -= elapsed_time;
+            if (slideTimer < 0.0f)
+            {
+                slideTimer = 0.0f;
+            }
+        }
+        #endregion
+
+        #region Hit State Time
+        // ===== HIT STATE TIME =====
+        if (hitStateTimer > 0.0f)
+        {
+            hitStateTimer -= elapsed_time;
+            if (hitStateTimer < 0.0f)
+            {
+                hitStateTimer = 0.0f;
+            }
+        }
+        #endregion
+
+        #region Roll State Time
+        // ===== ROLL STATE TIME =====
+        // TODO: Add a drum beat to help determine perfect timing
+        if (rollStateTimer > 0.0f)
+        {
+            rollStateTimer -= elapsed_time;
+            if (rollStateTimer < 0.0f)
+            {
+                rollStateTimer = 0.0f;
+            } 
         }
         #endregion
     }
@@ -550,9 +627,20 @@ public class FirstPersonController : MonoBehaviour
                                                 // turn to the camera and hold up a sign like "help!"
         if (coyoteTimer > 0.0f)
         {
-            rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
-            isGrounded = false;
-            coyoteTimer = 0.0f;
+            if (0.0f < rollStateTimer && rollStateTimer < rollStateSweetSpotLength)
+            {
+                // If we hit the sweet spot during a roll, we rollpounce!
+                RollPounce();
+            }
+            else
+            {
+                rb.linearVelocity = new Vector3(rb.linearVelocity.x, jumpPower, rb.linearVelocity.z);
+                isGrounded = false;
+                slideTimer = 0.0f;
+                coyoteTimer = 0.0f;
+                rollStateTimer = 0.0f;
+            }
+            
         }
 
         // When crouched and using toggle system, will uncrouch for a jump
@@ -564,6 +652,8 @@ public class FirstPersonController : MonoBehaviour
 
     private void Dive()
     {
+        if (DiveSound != null) AudioSource.PlayClipAtPoint(DiveSound, transform.position);
+        if (DiveEffect != null) DiveEffect.Play();
         Vector3 cam_angle = Vector3.Normalize(playerCamera.transform.forward);
 
         // Currently, pouncing and diving are different states even though they do the same thing
@@ -573,16 +663,73 @@ public class FirstPersonController : MonoBehaviour
             // pounce
             rb.linearVelocity = divePower * cam_angle;
             isPouncing = true;
+            slideTimer = maxSlideTime;
         }
         else
         {
             // dive
             rb.linearVelocity = divePower * cam_angle;
             isDiving = true;
+            slideTimer = maxSlideTime;
         }
     }
 
-    // Unused.
+    private void Roll()
+    {
+        Vector3 cam_angle = playerCamera.transform.forward;
+        if ((cam_angle.x == 0) && (cam_angle.z == 0))
+        {
+            // If the player looks straight up, they kinda... don't give roll a direction to go, so we can say "screw you" and not enter the roll state
+            return;
+        }
+        cam_angle.y = 0;
+        cam_angle = Vector3.Normalize(cam_angle);
+        rollDirection = cam_angle;
+        rollStateTimer = rollStateLength;
+    }
+
+    private void RollPounce()
+    {
+        // Set up our roll pounce vectors
+        Vector3 pounce_angle = playerCamera.transform.forward;
+        pounce_angle.y = 0;
+
+        // If the player looks straight up or straight back, they pounce in the direction of their roll
+        if ((pounce_angle.x == 0) && (pounce_angle.z == 0))
+        {
+            pounce_angle = rollDirection;
+        }
+        if (pounce_angle * -1 == rollDirection)
+        {
+            pounce_angle = rollDirection;
+        }
+
+        // otherwise, they pounce  in the direction of their camera, clamped a maximum deviation
+        else
+        {
+            // TODO: add a snare hit to show perfect timing!
+            pounce_angle = Vector3.Normalize(pounce_angle);
+            float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
+            if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
+            {
+                pounce_angle = Quaternion.AngleAxis(maxPounceDeviation, Vector3.Cross(rollDirection, pounce_angle)) * rollDirection;
+            }
+        }
+
+        pounce_angle.y = rollPounceVert;
+
+        isGrounded = false;
+        isRollPouncing = true;
+        slideTimer = maxSlideTime;
+        coyoteTimer = 0.0f;
+        rollStateTimer = 0.0f;
+
+        rb.linearVelocity = pounce_angle * rollPouncePower;
+
+
+    }
+
+
     private void Crouch()
     {
         // Stands player up to full height
@@ -646,8 +793,9 @@ public class FirstPersonController : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         // dive bounce up
-        if ((other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss")) && (isDiving || isPouncing))
+        if ((other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss")) && PlayerCanDoMeleeDamage())
         {
+            // ===== DAMAGE =====
             // Build the damage package
             DamageData dmg = new DamageData
             {
@@ -666,29 +814,42 @@ public class FirstPersonController : MonoBehaviour
             }
 
 
-            // Reset the air control (See fixedUpdate for more info on air control)
+            // ===== COMBO AND CONTROL =====
+
+            // Handle Air Control And Combo
+            // Fix Me! Double flip!
             ResetAirControl();
-
-
-            Vector3 dirToEnemy = other.gameObject.transform.position - rb.position; // Determine the direction to the enemy
-            dirToEnemy.y = 0;                                                       // Lock the vector to the x-z plane
-            dirToEnemy.Normalize();                                                 // normalize, set its length to be equal to public float onHitPopBack
-            dirToEnemy *= -onHitPopBack;
-            if (lastEnemyThisCombo != other.gameObject)                             // if our enemy isn't the one we comboed off last, we can continue
+            Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
+            dirToEnemy.y = 0;
+            if (dirToEnemy.sqrMagnitude > 0.0f)
+            {
+                dirToEnemy.Normalize();
+                dirToEnemy *= -onHitPopBack;
+            }
+            if (lastEnemyThisCombo != other.gameObject)
             {
                 isDiving = false;
                 isPouncing = false;
+                isRollPouncing = false;
                 dirToEnemy.y = onHitPopUp;
                 lastEnemyThisCombo = other.gameObject;
+                hitStateTimer = maxHitStateTime;
             }
             else                                                                    // otherwise make backwards trajectory flatter and spike the player down; do not refresh dive
             {
                 dirToEnemy *= 2;
                 dirToEnemy.y = 0;
             }
-            rb.linearVelocity = dirToEnemy;                                         // set our velocity to the resulting vector
-            
+            rb.linearVelocity = dirToEnemy;
+            slideTimer = 0.0f;
+            rollStateTimer = 0.0f;
+
         }
+    }
+
+    private bool PlayerCanDoMeleeDamage()
+    {
+        return isDiving || isPouncing || isRollPouncing;
     }
 }
 
