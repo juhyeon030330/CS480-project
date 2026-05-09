@@ -367,8 +367,6 @@ public class FirstPersonController : MonoBehaviour
         else if (enableJump && Input.GetKeyDown(jumpKey) && !isDiving && !isPouncing && coyoteTimer <= 0.0f)
         {
             Dive();
-            if (DiveSound != null) AudioSource.PlayClipAtPoint(DiveSound, transform.position);
-            if (DiveEffect != null) DiveEffect.Play();
         }
 
         if (isGrounded && (slideTimer == 0.0f))
@@ -654,6 +652,8 @@ public class FirstPersonController : MonoBehaviour
 
     private void Dive()
     {
+        if (DiveSound != null) AudioSource.PlayClipAtPoint(DiveSound, transform.position);
+        if (DiveEffect != null) DiveEffect.Play();
         Vector3 cam_angle = Vector3.Normalize(playerCamera.transform.forward);
 
         // Currently, pouncing and diving are different states even though they do the same thing
