@@ -730,62 +730,6 @@ public class FirstPersonController : MonoBehaviour
     }
 
 
-    private void Roll()
-    {
-        Vector3 cam_angle = playerCamera.transform.forward;
-        if ((cam_angle.x == 0) && (cam_angle.z == 0))
-        {
-            // If the player looks straight up, they kinda... don't give roll a direction to go, so we can say "screw you" and not enter the roll state
-            return;
-        }
-        cam_angle.y = 0;
-        cam_angle = Vector3.Normalize(cam_angle);
-        rollDirection = cam_angle;
-        rollStateTimer = rollStateLength;
-    }
-
-    private void RollPounce()
-    {
-        // Set up our roll pounce vectors
-        Vector3 pounce_angle = playerCamera.transform.forward;
-        pounce_angle.y = 0;
-
-        // If the player looks straight up or straight back, they pounce in the direction of their roll
-        if ((pounce_angle.x == 0) && (pounce_angle.z == 0))
-        {
-            pounce_angle = rollDirection;
-        }
-        if (pounce_angle * -1 == rollDirection)
-        {
-            pounce_angle = rollDirection;
-        }
-
-        // otherwise, they pounce  in the direction of their camera, clamped a maximum deviation
-        else
-        {
-            // TODO: add a snare hit to show perfect timing!
-            pounce_angle = Vector3.Normalize(pounce_angle);
-            float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
-            if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
-            {
-                pounce_angle = Quaternion.AngleAxis(maxPounceDeviation, Vector3.Cross(rollDirection, pounce_angle)) * rollDirection;
-            }
-        }
-
-        pounce_angle.y = rollPounceVert;
-
-        isGrounded = false;
-        isRollPouncing = true;
-        slideTimer = maxSlideTime;
-        coyoteTimer = 0.0f;
-        rollStateTimer = 0.0f;
-
-        rb.linearVelocity = pounce_angle * rollPouncePower;
-
-
-    }
-
-
     private void Crouch()
     {
         // Stands player up to full height
@@ -897,8 +841,14 @@ public class FirstPersonController : MonoBehaviour
                 dirToEnemy.y = 0;
             }
             rb.linearVelocity = dirToEnemy;
-            
+            slideTimer = 0.0f;
+
         }
+    }
+
+    private bool PlayerCanDoMeleeDamage()
+    {
+        return isDiving || isPouncing || isRollPouncing;
     }
 }
 
