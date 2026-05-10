@@ -233,6 +233,17 @@ public class FirstPersonController : MonoBehaviour
 
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.Minus))
+        {
+            mouseSensitivity *= 0.9f;
+            Debug.Log("Sensitivity decreased to: " + mouseSensitivity);
+        }
+        if (Input.GetKeyDown(KeyCode.Equals))
+        {
+            mouseSensitivity *= 1.1f;
+            Debug.Log("Sensitivity increased to: " + mouseSensitivity);
+        }
+
         #region Camera
 
         // Control camera movement
