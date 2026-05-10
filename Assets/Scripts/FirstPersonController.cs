@@ -808,7 +808,7 @@ public class FirstPersonController : MonoBehaviour
             if (other.TryGetComponent<IDamageable>(out var target))
             {
                 target.TakeDamage(dmg);
-                if (HitSound != null) AudioSource.PlayClipAtPoint(HitSound, other.transform.position);
+                if (HitSound != null) AudioSource.PlayClipAtPoint(HitSound, transform.position);
                 Vector3 contactPoint = other.ClosestPoint(transform.position);
                 if (hitEffect != null) Instantiate(hitEffect, contactPoint, Quaternion.identity);
             }
