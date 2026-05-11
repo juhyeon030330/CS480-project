@@ -5,6 +5,7 @@ public class DummyBehavior : MonoBehaviour, IDamageable
     [Header("Health Settings")]
     public float maxHealth = 100f;
     private float currentHealth;
+    public bool unbreakable = false;
 
     [Header("Knockback (No Rigidbody)")]
     public bool useKnockback = false; 
@@ -55,7 +56,10 @@ public class DummyBehavior : MonoBehaviour, IDamageable
 
     public void TakeDamage(DamageData data)
     {
-        currentHealth -= data.amount;
+        if (unbreakable == false)
+        {
+            currentHealth -= data.amount;
+        }
 
         if (useKnockback)
         {
