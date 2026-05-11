@@ -3450,6 +3450,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
+      propertyPath: RollPounceSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3495403688df6aa47a57bb32baf3dd72, type: 3}
+    - target: {fileID: 4459864850019384740, guid: 6bacecc4f3df9584198879c73a6b6c36, type: 3}
       propertyPath: airAcceleration
       value: 10
       objectReference: {fileID: 0}
