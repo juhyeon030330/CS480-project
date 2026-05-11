@@ -554,9 +554,10 @@ public class FirstPersonController : MonoBehaviour
         else if (coyoteTimer > 0.0f)
         {
             coyoteTimer -= elapsed_time;
-            if (coyoteTimer < 0.0f)
+            if (coyoteTimer <= 0.0f)
             {
                 coyoteTimer = 0.0f;
+                rollStateTimer = 0.0f;
             }
         }
         #endregion
@@ -732,7 +733,7 @@ public class FirstPersonController : MonoBehaviour
             // TODO: add a snare hit to show perfect timing!
             pounce_angle = Vector3.Normalize(pounce_angle);
             // clamping the deviation feels bad, esp when the player doesn't have feedback
-            
+
             // float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
             // if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
             // {
