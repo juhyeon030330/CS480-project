@@ -20,6 +20,8 @@ public class FirstPersonController : MonoBehaviour
     public ParticleSystem DiveEffect;
     public AudioClip HitSound;
     public AudioClip DiveSound;
+    public AudioClip RollSound;
+    public AudioClip RollPounceSound;
     private Rigidbody rb;
 
     #region Camera Movement Variables
@@ -110,11 +112,11 @@ public class FirstPersonController : MonoBehaviour
     public float maxSlideTime = 0.2f;               // handles the duration of the "slide" state when on ground
     public float maxHitStateTime = 0.2f;            // Max duration after a melee hit where the character is not considered "grounded"
     public float rollStateLength = 0.6f;            // Seconds of rollstate (Incl. sweet spot) -- do not set to less than maxSlideTime!
-    public float rollStateSweetSpotLength = 0.2f;   // Seconds of rollstate sweet spot
+    public float rollStateSweetSpotLength = 0.1f;   // Seconds of rollstate sweet spot
     public float rollSpeed = 15f;                    // Speed of rollstate
     public float rollPouncePower = 25f;             // Power of roll pounce on sweet spot - Can be high-power because it's mostly lateral
     public float rollPounceVert = 0.2f;
-    public float maxPounceDeviation = 45f;          // The maximum angle in degrees that we can deviate from our roll pounce
+    public float maxPounceDeviation = 180f;          // The maximum angle in degrees that we can deviate from our roll pounce
 
     // Internal Variables
     private bool isGrounded = false;
@@ -563,9 +565,10 @@ public class FirstPersonController : MonoBehaviour
         else if (coyoteTimer > 0.0f)
         {
             coyoteTimer -= elapsed_time;
-            if (coyoteTimer < 0.0f)
+            if (coyoteTimer <= 0.0f)
             {
                 coyoteTimer = 0.0f;
+                rollStateTimer = 0.0f;
             }
         }
         #endregion
@@ -599,6 +602,21 @@ public class FirstPersonController : MonoBehaviour
         // TODO: Add a drum beat to help determine perfect timing
         if (rollStateTimer > 0.0f)
         {
+
+            float sweetspot_midpoint = rollStateSweetSpotLength / 2;
+            float time_before_half_sweetspot = rollStateLength - sweetspot_midpoint;
+            float two_third = time_before_half_sweetspot / 3 + sweetspot_midpoint;
+            float one_third = 2 * time_before_half_sweetspot / 3 + sweetspot_midpoint;
+
+            if (((rollStateTimer - elapsed_time) < one_third) && (rollStateTimer > one_third))
+            {
+                AudioSource.PlayClipAtPoint(RollSound, transform.position);
+            }
+            else if (((rollStateTimer - elapsed_time) < two_third) && (rollStateTimer > two_third))
+            {
+                AudioSource.PlayClipAtPoint(RollSound, transform.position);
+            }
+
             rollStateTimer -= elapsed_time;
             if (rollStateTimer < 0.0f)
             {
@@ -687,6 +705,7 @@ public class FirstPersonController : MonoBehaviour
 
     private void Roll()
     {
+        
         Vector3 cam_angle = playerCamera.transform.forward;
         if ((cam_angle.x == 0) && (cam_angle.z == 0))
         {
@@ -697,11 +716,15 @@ public class FirstPersonController : MonoBehaviour
         cam_angle = Vector3.Normalize(cam_angle);
         rollDirection = cam_angle;
         rollStateTimer = rollStateLength;
+
+        if (RollSound != null) AudioSource.PlayClipAtPoint(RollSound, transform.position);
     }
 
     private void RollPounce()
     {
         // Set up our roll pounce vectors
+        AudioSource.PlayClipAtPoint(RollPounceSound, transform.position);
+
         Vector3 pounce_angle = playerCamera.transform.forward;
         pounce_angle.y = 0;
 
@@ -715,16 +738,18 @@ public class FirstPersonController : MonoBehaviour
             pounce_angle = rollDirection;
         }
 
-        // otherwise, they pounce  in the direction of their camera, clamped a maximum deviation
+        // otherwise, they pounce  in the direction of their camera
         else
         {
             // TODO: add a snare hit to show perfect timing!
             pounce_angle = Vector3.Normalize(pounce_angle);
-            float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
-            if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
-            {
-                pounce_angle = Quaternion.AngleAxis(maxPounceDeviation, Vector3.Cross(rollDirection, pounce_angle)) * rollDirection;
-            }
+            // clamping the deviation feels bad, esp when the player doesn't have feedback
+
+            // float cos_of_deviation = Vector3.Dot(pounce_angle, rollDirection);
+            // if (cos_of_deviation > Mathf.Cos(maxPounceDeviation))
+            // {
+            //     pounce_angle = Quaternion.AngleAxis(maxPounceDeviation, Vector3.Cross(rollDirection, pounce_angle)) * rollDirection;
+            // }
         }
 
         pounce_angle.y = rollPounceVert;
