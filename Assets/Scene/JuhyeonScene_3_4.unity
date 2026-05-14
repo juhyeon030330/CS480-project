@@ -52967,6 +52967,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8300000, guid: 735f7aa3ce3374152a5043df650f6092, type: 3}
     - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: RollSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c532aff4f1217d429513608ddf728c1, type: 3}
+    - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: crosshair
       value: 0
       objectReference: {fileID: 0}
@@ -52978,6 +52982,10 @@ PrefabInstance:
       propertyPath: enableSprint
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: RollPounceSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3495403688df6aa47a57bb32baf3dd72, type: 3}
     - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: unlimitedSprint
       value: 1
@@ -65034,7 +65042,15 @@ PrefabInstance:
     - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: DiveSound
       value: 
-      objectReference: {fileID: 8300000, guid: 825b827d52fc74d13be91248e23b3c02, type: 3}
+      objectReference: {fileID: 8300000, guid: 735f7aa3ce3374152a5043df650f6092, type: 3}
+    - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: RollSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 6c532aff4f1217d429513608ddf728c1, type: 3}
+    - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: RollPounceSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 3495403688df6aa47a57bb32baf3dd72, type: 3}
     - target: {fileID: 8833973256945457682, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10.3
