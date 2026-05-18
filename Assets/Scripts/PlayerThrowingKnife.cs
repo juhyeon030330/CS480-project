@@ -33,7 +33,7 @@ public class PlayerThrowingKnife : MonoBehaviour
     {
         readyToThrow = false;
 
-        GameObject knife = Instantiate(knifeObject, attackPoint.position, camera.rotation);
+        GameObject knife = Instantiate(knifeObject, attackPoint.position, (camera.rotation) * Quaternion.Euler(90, 0, 0));
 
         Rigidbody knifeRB = knife.GetComponent<Rigidbody>();
 
