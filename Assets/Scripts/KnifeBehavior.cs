@@ -1,10 +1,12 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
-
 public class KnifeBehavior : MonoBehaviour
 {
     private Rigidbody RB;
-    
     private bool targetHit = false;
+    private GameObject hitEnemy;
+    public bool hasLanded = false;
 
     private void Start()
     {
@@ -13,60 +15,98 @@ public class KnifeBehavior : MonoBehaviour
 
     private void OnCollisionEnter(Collision other)
     {
-        // Determine if player was touched, in which case it is picked up
-        if (other.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player") && hasLanded == true)
         {
             other.gameObject.GetComponent<PlayerThrowingKnife>().totalKnives++;
 
-            // Deal more damage as it is picked up if lodged in an enemy
-            if (targetHit == true) {
-                // ===== DAMAGE ===== (copied from FirstPersonController)
-                // Build the damage package
+            other.gameObject.GetComponent<PlayerThrowingKnife>().AddKnife();
+
+            if (targetHit == true && hitEnemy != null)
+            {
                 DamageData knifePickupDmg = new DamageData
                 {
-                    amount = 10f,
+                    amount = 15f,
                     source = this.gameObject,
-                    hitDirection = (other.gameObject.transform.position - transform.position).normalized
+                    hitDirection = (hitEnemy.transform.position - transform.position).normalized
                 };
-
-                // Deal damage
-                if (other.gameObject.TryGetComponent<IDamageable>(out var target))
+                IDamageable target = hitEnemy.GetComponentInParent<IDamageable>();
+                if (target != null)
                 {
                     target.TakeDamage(knifePickupDmg);
                 }
             }
-
             Destroy(gameObject);
         }
-        // Determine if a target was hit
+
+        if (hasLanded == true) return;
+
         if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss"))
         {
             targetHit = true;
+            hitEnemy = other.gameObject;
         }
-        else {
+        else
+        {
             targetHit = false;
         }
 
         if (targetHit == true)
         {
-            // ===== DAMAGE ===== (copied from FirstPersonController)
-            // Build the damage package
+            // Parent before dealing damage so knife is in hierarchy if enemy dies
+            RB.isKinematic = true;
+            transform.SetParent(other.gameObject.transform);
+            hasLanded = true;
+
             DamageData knifeDmg = new DamageData
             {
                 amount = 25f,
                 source = this.gameObject,
                 hitDirection = (other.gameObject.transform.position - transform.position).normalized
             };
-
-            // Deal damage
-            if (other.gameObject.TryGetComponent<IDamageable>(out var target))
+            IDamageable target = other.gameObject.GetComponentInParent<IDamageable>();
+            if (target != null)
             {
                 target.TakeDamage(knifeDmg);
             }
+        }
+        else
+        {
+            hasLanded = true;
+        }
+    }
 
-            // Stick to enemy
+    private void OnTriggerEnter(Collider other)
+    {
+        if (hasLanded) return;
+
+        if (other.gameObject.CompareTag("Enemy") || other.gameObject.CompareTag("Boss"))
+        {
+            targetHit = true;
+            hitEnemy = other.gameObject;
+
+            // Parent before dealing damage so knife is in hierarchy if enemy dies
             RB.isKinematic = true;
             transform.SetParent(other.gameObject.transform);
+            hasLanded = true;
+
+            DamageData knifeDmg = new DamageData
+            {
+                amount = 25f,
+                source = this.gameObject,
+                hitDirection = (other.gameObject.transform.position - transform.position).normalized
+            };
+            IDamageable target = other.gameObject.GetComponentInParent<IDamageable>();
+            if (target != null)
+            {
+                target.TakeDamage(knifeDmg);
+            }
         }
+    }
+
+    public void Detach()
+    {
+        transform.SetParent(null);
+        RB.isKinematic = false;
+        RB.linearVelocity = Vector3.zero;
     }
 }

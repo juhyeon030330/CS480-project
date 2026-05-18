@@ -18,6 +18,11 @@ public class PlayerThrowingKnife : MonoBehaviour
 
     bool readyToThrow;
 
+    //Knife UI Objects
+    public GameObject knife1;
+    public GameObject knife2;
+    public GameObject knife3;
+
     private void Start()
     {
         readyToThrow = true;
@@ -52,11 +57,40 @@ public class PlayerThrowingKnife : MonoBehaviour
 
         totalKnives--;
 
+        // Remove knife from UI
+        if (totalKnives <= 0)
+        {
+            knife1.SetActive(false);
+        } else if (totalKnives == 1)
+        {
+            knife2.SetActive(false);
+        } else
+        {
+            knife3.SetActive(false);
+        }
+
         Invoke(nameof(ResetThrow), throwCooldown);
     }
 
     private void ResetThrow()
     {
         readyToThrow = true;
+    }
+
+    public void AddKnife()
+    {
+        // Add knife to UI
+        if (totalKnives <= 1)
+        {
+            knife1.SetActive(true);
+        }
+        else if (totalKnives == 2)
+        {
+            knife2.SetActive(true);
+        }
+        else
+        {
+            knife3.SetActive(true);
+        }
     }
 }

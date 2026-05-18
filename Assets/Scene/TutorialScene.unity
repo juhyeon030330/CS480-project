@@ -53340,6 +53340,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8503421075227888164, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: sceneToLoad
+      value: level2
+      objectReference: {fileID: 0}
     - target: {fileID: 8536251847840790925, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: DiveSound
       value: 
@@ -53478,11 +53482,14 @@ MonoBehaviour:
   camera: {fileID: 1784884908}
   attackPoint: {fileID: 705518598}
   knifeObject: {fileID: 9137246287973481035, guid: ebf1d0e90a04f444eb85b227c576b5c2, type: 3}
-  totalKnives: 3
-  throwCooldown: 2
+  totalKnives: 0
+  throwCooldown: 1
   throwKey: 102
   throwForce: 10
   throwUpwardForce: 0.5
+  knife1: {fileID: 0}
+  knife2: {fileID: 0}
+  knife3: {fileID: 0}
 --- !u!1 &723257267
 GameObject:
   m_ObjectHideFlags: 0

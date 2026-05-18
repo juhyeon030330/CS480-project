@@ -5160,7 +5160,7 @@ Transform:
   m_GameObject: {fileID: 3628352196115628728}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6880001, y: -0.04900002, z: 0.3390046}
+  m_LocalPosition: {x: 0.7, y: -0.04900002, z: 0.3390046}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -10475,8 +10475,11 @@ MonoBehaviour:
   totalKnives: 3
   throwCooldown: 1
   throwKey: 102
-  throwForce: 10
+  throwForce: 15
   throwUpwardForce: 0.5
+  knife1: {fileID: 0}
+  knife2: {fileID: 0}
+  knife3: {fileID: 0}
 --- !u!1 &9218799882077694181
 GameObject:
   m_ObjectHideFlags: 0
