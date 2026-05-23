@@ -595,9 +595,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 97663068}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.025, y: 0.01, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 405926961}
@@ -606,7 +606,7 @@ Transform:
   - {fileID: 984934748}
   - {fileID: 794614593}
   - {fileID: 177019153}
-  m_Father: {fileID: 679995308}
+  m_Father: {fileID: 2100847562}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &115692535
 GameObject:
@@ -1870,9 +1870,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 487083187}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.01, y: 0, z: 0.01}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.00025, y: 0.5, z: 0.00025}
+  m_LocalScale: {x: 0.025, y: 0.01, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1845166434}
@@ -1881,7 +1881,7 @@ Transform:
   - {fileID: 27141055}
   - {fileID: 812177886}
   - {fileID: 552975364}
-  m_Father: {fileID: 679995308}
+  m_Father: {fileID: 2100847562}
   m_LocalEulerAnglesHint: {x: 0, y: 90, z: 0}
 --- !u!1 &500455405 stripped
 GameObject:
@@ -1901,6 +1901,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 50
+  unbreakable: 0
   useKnockback: 0
   knockbackDistance: 2
   knockbackDuration: 0.2
@@ -2740,10 +2741,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2100847562}
-  - {fileID: 97663069}
-  - {fileID: 1761354505}
-  - {fileID: 911587398}
-  - {fileID: 487083188}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &695457207
@@ -3343,6 +3340,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 50
+  unbreakable: 0
   useKnockback: 0
   knockbackDistance: 2
   knockbackDuration: 0.2
@@ -4010,9 +4008,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 911587397}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -0.01, y: 0, z: 0.01}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalPosition: {x: -0.00025, y: 0.5, z: 0.00025}
+  m_LocalScale: {x: 0.025, y: 0.01, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1656079886}
@@ -4021,7 +4019,7 @@ Transform:
   - {fileID: 1611040345}
   - {fileID: 1438868873}
   - {fileID: 310388342}
-  m_Father: {fileID: 679995308}
+  m_Father: {fileID: 2100847562}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &963670280
 GameObject:
@@ -6610,9 +6608,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1761354504}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.01, y: 0, z: -0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: -0.00025, y: 0.5, z: 0}
+  m_LocalScale: {x: 0.025, y: 0.01, z: 0.025}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1907132971}
@@ -6621,7 +6619,7 @@ Transform:
   - {fileID: 1753097978}
   - {fileID: 607586781}
   - {fileID: 677828716}
-  m_Father: {fileID: 679995308}
+  m_Father: {fileID: 2100847562}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!1 &1799902936
 GameObject:
@@ -7794,7 +7792,11 @@ Transform:
   m_LocalPosition: {x: 0, y: -50, z: 0}
   m_LocalScale: {x: 40, y: 100, z: 40}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 97663069}
+  - {fileID: 1761354505}
+  - {fileID: 911587398}
+  - {fileID: 487083188}
   m_Father: {fileID: 679995308}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &2100847563
@@ -13409,6 +13411,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
+  unbreakable: 0
   useKnockback: 0
   knockbackDistance: 2
   knockbackDuration: 0.2
