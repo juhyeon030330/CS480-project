@@ -24,6 +24,9 @@ public class FirstPersonController : MonoBehaviour
     public AudioClip RollPounceSound;
     private Rigidbody rb;
 
+    [Header("Lock-On Integration")]
+    public FirstPersonLockOn lockOnScript;
+
     #region Camera Movement Variables
 
     public Camera playerCamera;
@@ -247,9 +250,12 @@ public class FirstPersonController : MonoBehaviour
         }
 
         #region Camera
-
+        if (lockOnScript != null && lockOnScript.IsLockedOn)
+        {
+    
+        }
         // Control camera movement
-        if (cameraCanMove)
+        else if (cameraCanMove)
         {
             yaw = transform.localEulerAngles.y + Input.GetAxis("Mouse X") * mouseSensitivity;
 

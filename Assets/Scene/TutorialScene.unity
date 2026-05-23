@@ -167,12 +167,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &16621985
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -300,12 +299,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 1
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!136 &22056111
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -605,12 +603,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &46635406
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -711,6 +708,110 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7454082279972290892, guid: 7e070b8a088d2554c835734206c89dd3, type: 3}
   m_PrefabInstance: {fileID: 1891370352}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &67514712
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 67514713}
+  - component: {fileID: 67514717}
+  - component: {fileID: 67514716}
+  - component: {fileID: 67514715}
+  - component: {fileID: 67514714}
+  m_Layer: 0
+  m_Name: EndLevelScreen
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &67514713
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67514712}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0.00015855198}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1494027245}
+  - {fileID: 1573534261}
+  - {fileID: 651313817}
+  m_Father: {fileID: 820901449}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0.00014908309, y: 145.26862}
+  m_SizeDelta: {x: 700, y: 300}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!225 &67514714
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67514712}
+  m_Enabled: 1
+  m_Alpha: 0
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
+--- !u!114 &67514715
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67514712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 33845b44d9a524265a62eb648398f3a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndLevelText
+--- !u!114 &67514716
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67514712}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
+  m_Material: {fileID: 0}
+  m_Color: {r: 0, g: 0, b: 0, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_Sprite: {fileID: 0}
+  m_Type: 0
+  m_PreserveAspect: 0
+  m_FillCenter: 1
+  m_FillMethod: 4
+  m_FillAmount: 1
+  m_FillClockwise: 1
+  m_FillOrigin: 0
+  m_UseSpriteMesh: 0
+  m_PixelsPerUnitMultiplier: 1
+--- !u!222 &67514717
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 67514712}
+  m_CullTransparentMesh: 1
 --- !u!1001 &68537028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -47525,12 +47626,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &190389938
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -48017,12 +48117,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &244146478
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49772,12 +49871,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &338124293
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -49799,6 +49897,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.5793304, y: 4.57071, z: 4.58}
   m_Center: {x: -0.19818878, y: 1.7853551, z: -0.02}
+--- !u!1 &340192256
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 340192257}
+  m_Layer: 0
+  m_Name: ThrowAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &340192257
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 340192256}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.6880001, y: -0.049000025, z: 0.3390046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 527327130}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &341009389
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -49920,12 +50049,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &352019890
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50221,12 +50349,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &367308953
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -50547,12 +50674,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &406152603
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -51945,6 +52071,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7454082279972290892, guid: 7e070b8a088d2554c835734206c89dd3, type: 3}
   m_PrefabInstance: {fileID: 1677340137}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &527327130 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5178382382890178608, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+  m_PrefabInstance: {fileID: 705518596}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &530799083
 GameObject:
   m_ObjectHideFlags: 0
@@ -52728,12 +52859,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &636905304
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -52755,6 +52885,162 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 4.5793304, y: 4.57071, z: 4.58}
   m_Center: {x: -0.19818878, y: 1.7853551, z: -0.02}
+--- !u!1 &651313816
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 651313817}
+  - component: {fileID: 651313820}
+  - component: {fileID: 651313819}
+  - component: {fileID: 651313818}
+  m_Layer: 0
+  m_Name: RankText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &651313817
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651313816}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 67514713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -175}
+  m_SizeDelta: {x: 500, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &651313818
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651313816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43f640e645c104e42a6566b8f56eb1af, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndLevelRank
+  aSec: 70
+  bSec: 80
+  cSec: 90
+  dSec: 100
+  _text: {fileID: 651313819}
+  timerScript: {fileID: 1573534258}
+--- !u!114 &651313819
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651313816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 'Rank: C'
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 70
+  m_fontSizeBase: 70
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &651313820
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 651313816}
+  m_CullTransparentMesh: 1
 --- !u!1001 &652469851
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -53033,11 +53319,45 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects:
+    - targetCorrespondingSourceObject: {fileID: 5178382382890178608, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 340192257}
     - targetCorrespondingSourceObject: {fileID: 1738217436928909815, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 238681621}
-    m_AddedComponents: []
+    - targetCorrespondingSourceObject: {fileID: 1738217436928909815, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 67514713}
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 8391860146986964433, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 705518598}
   m_SourcePrefab: {fileID: 100100000, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+--- !u!1 &705518597 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8391860146986964433, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+  m_PrefabInstance: {fileID: 705518596}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &705518598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 705518597}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a84f7a90237e436cbd77e9d8c834946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerThrowingKnife
+  camera: {fileID: 1784884908}
+  attackPoint: {fileID: 340192257}
+  knifeObject: {fileID: 9137246287973481035, guid: ebf1d0e90a04f444eb85b227c576b5c2, type: 3}
+  totalKnives: 3
+  throwCooldown: 2
+  throwKey: 102
+  throwForce: 10
+  throwUpwardForce: 0.5
 --- !u!1 &723257267
 GameObject:
   m_ObjectHideFlags: 0
@@ -53236,12 +53556,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &727900904
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54534,12 +54853,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &774851383
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -54915,12 +55233,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &820546503
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -55420,6 +55737,74 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 48185312f1049254b8d84087aaec9ca1, type: 3}
+--- !u!1 &879325057
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 879325060}
+  - component: {fileID: 879325059}
+  - component: {fileID: 879325058}
+  m_Layer: 0
+  m_Name: LevelEndTrigger
+  m_TagString: Finish
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &879325058
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879325057}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 05e00566ec2194863b75be5dfc0f25b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndLevelTrigger
+  endScript: {fileID: 67514715}
+  timerScript: {fileID: 1573534258}
+--- !u!65 &879325059
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879325057}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 30, y: 50, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!4 &879325060
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 879325057}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 19.4, y: 29.2, z: -133}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!43 &880339696
 Mesh:
   m_ObjectHideFlags: 0
@@ -57189,12 +57574,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &901777720
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -57394,12 +57778,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &939527389
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60233,12 +60616,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 1
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!136 &1001975475
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -60371,12 +60753,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1010004095
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60519,12 +60900,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1037811454
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60656,12 +61036,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1084049888
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -60731,12 +61110,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1090438867
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63616,12 +63994,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1257439731
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -63829,12 +64206,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 1
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!1 &1267702492 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5093889288529411952, guid: 7162793d91fb69744a25a3a0371894ba, type: 3}
@@ -64190,7 +64566,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1296454782
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64433,12 +64809,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1305149364
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -64652,12 +65027,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1316171775
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -64800,12 +65174,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1336394804
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65258,12 +65631,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1369669039
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65333,12 +65705,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1372764782
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65672,12 +66043,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1441488125
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65747,12 +66117,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1443316906
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -65972,6 +66341,143 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7454082279972290892, guid: 7e070b8a088d2554c835734206c89dd3, type: 3}
   m_PrefabInstance: {fileID: 1819370523}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1494027244
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1494027245}
+  - component: {fileID: 1494027247}
+  - component: {fileID: 1494027246}
+  m_Layer: 0
+  m_Name: LevelCompleteText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1494027245
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494027244}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 67514713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -50}
+  m_SizeDelta: {x: 800, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1494027246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494027244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: Level Complete!
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 70
+  m_fontSizeBase: 70
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1494027247
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1494027244}
+  m_CullTransparentMesh: 1
 --- !u!1 &1499600297 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 7979f508bee93014c9ee3ddfd358e342, type: 3}
@@ -66176,12 +66682,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1525777018
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66317,12 +66822,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1533753702
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -66796,6 +67300,159 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e0af55f05423d1843bd0ae48fe867923, type: 3}
+--- !u!1 &1573534257
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1573534261}
+  - component: {fileID: 1573534260}
+  - component: {fileID: 1573534259}
+  - component: {fileID: 1573534258}
+  m_Layer: 0
+  m_Name: TimerText
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1573534258
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573534257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 843d69c496df547a7850227bdc8d01de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Timer
+  _text: {fileID: 1573534259}
+  elapsedTime: 0
+  paused: 0
+--- !u!114 &1573534259
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573534257}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 0 seconds
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 70
+  m_fontSizeBase: 70
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 0
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 256
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_characterHorizontalScale: 1
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_TextWrappingMode: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 0
+  m_ActiveFontFeatures: 6e72656b
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_EmojiFallbackSupport: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!222 &1573534260
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573534257}
+  m_CullTransparentMesh: 1
+--- !u!224 &1573534261
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1573534257}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 67514713}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0, y: -100}
+  m_SizeDelta: {x: 500, y: 50}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1576910412
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -67038,12 +67695,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1584142496
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -67595,12 +68251,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1669673413
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -68963,12 +69618,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1701781967
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69288,12 +69942,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1747040128
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -69663,6 +70316,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3fd43d86ad70c5f41a22da3412886ac4, type: 3}
+--- !u!4 &1784884908 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 38693193691570616, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+  m_PrefabInstance: {fileID: 705518596}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1795109191 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 264213370537990050, guid: 7162793d91fb69744a25a3a0371894ba, type: 3}
@@ -69682,12 +70340,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 1000
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!135 &1795109195
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -71026,12 +71683,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &1941397814
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72406,12 +73062,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!1 &2100899979
 GameObject:
   m_ObjectHideFlags: 0
@@ -72460,12 +73115,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::DummyBehavior
   maxHealth: 100
   unbreakable: 0
+  animator: {fileID: 0}
+  flinchTriggerName: Flinch
+  flinchDuration: 0.5
   useKnockback: 0
   knockbackDistance: 2
-  knockbackDuration: 0.2
-  useAI: 0
-  moveSpeed: 2
-  patrolDistance: 3
 --- !u!65 &2100899982
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -72840,6 +73494,7 @@ PrefabInstance:
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
+  - {fileID: 879325060}
   - {fileID: 426133495}
   - {fileID: 869506476}
   - {fileID: 1114959761}

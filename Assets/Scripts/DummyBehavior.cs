@@ -1,75 +1,91 @@
+using System.Collections;
 using UnityEngine;
 
 public class DummyBehavior : MonoBehaviour, IDamageable
 {
     [Header("Health Settings")]
-    public float maxHealth = 100f;
+    [SerializeField] private float maxHealth = 100f;
+    [SerializeField] private bool unbreakable = false;
     private float currentHealth;
-    public bool unbreakable = false;
 
-    [Header("Knockback (No Rigidbody)")]
-    public bool useKnockback = false; 
-    public float knockbackDistance = 2f;
-    public float knockbackDuration = 0.2f;
-    private float knockbackTimer = 0f;
+    [Header("Animation & Flinch Settings")]
+    [SerializeField] private Animator animator;
+    [SerializeField] private string flinchTriggerName = "Flinch";
+    [SerializeField] private float flinchDuration = 0.5f;
+
+    [Header("Knockback Settings (No Rigidbody)")]
+    [SerializeField] private bool useKnockback = true; 
+    [SerializeField] private float knockbackDistance = 4f;
+    private bool isFlinching = false;
     private Vector3 knockbackTarget;
-
-    [Header("AI Settings")]
-    public bool useAI = false; 
-    public float moveSpeed = 2f;
-    public float patrolDistance = 3f;
-    private Vector3 startPosition;
-    private int direction = 1;
+    private AudioSource audioSource;
 
     void Awake()
     {
         currentHealth = maxHealth;
-        startPosition = transform.position;
+        if (animator == null) animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
     }
 
     void Update()
     {
-        // If we are currently being knocked back, handle that movement first
-        if (useKnockback && knockbackTimer > 0)
+        // Smoothly interpolate position only while flinching
+        if (useKnockback && isFlinching)
         {
-            float t = 1f - (knockbackTimer / knockbackDuration);
-            transform.position = Vector3.Lerp(transform.position, knockbackTarget, t);
-            knockbackTimer -= Time.deltaTime;
-        }
-        else if (useAI)
-        {
-            HandlePatrol();
-        }
-    }
-
-    private void HandlePatrol()
-    {
-        transform.Translate(Vector3.forward * direction * moveSpeed * Time.deltaTime);
-
-        // Check distance from start
-        if (Vector3.Distance(startPosition, transform.position) > patrolDistance)
-        {
-            direction *= -1;
-            transform.Rotate(0, 180, 0);
+            // Frame-rate independent smoothing toward the target position
+            transform.position = Vector3.Lerp(transform.position, knockbackTarget, Time.deltaTime * (1f / flinchDuration));
         }
     }
 
     public void TakeDamage(DamageData data)
     {
-        if (unbreakable == false)
+        if (!unbreakable)
         {
             currentHealth -= data.amount;
         }
 
-        if (useKnockback)
+        if (currentHealth <= 0)
         {
-            // Calculate a point in the distance to move toward
-            knockbackTarget = transform.position + (data.hitDirection * knockbackDistance);
-            knockbackTimer = knockbackDuration;
+            Die();
+            return;
         }
 
-        if (currentHealth <= 0) Die();
+        // Trigger Flinch and Knockback
+        StartCoroutine(FlinchRoutine(data.hitDirection));
     }
 
-    void Die() => Destroy(gameObject);
+    private IEnumerator FlinchRoutine(Vector3 hitDirection)
+    {
+
+        isFlinching = true;
+
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop(); 
+        }
+
+        // 1. Trigger the animator parameter
+        if (animator != null)
+        {
+            animator.SetTrigger(flinchTriggerName);
+        }
+
+        // 2. Set up the transform-based knockback destination
+        if (useKnockback)
+        {
+            // Flatten hit direction on the Y-axis to prevent the dummy from sinking or flying
+            Vector3 flatDirection = new Vector3(hitDirection.x, 0, hitDirection.z).normalized;
+            knockbackTarget = transform.position + (flatDirection * knockbackDistance);
+        }
+
+        // 3. Keep the flinch state active for the designated duration
+        yield return new WaitForSeconds(flinchDuration);
+
+        isFlinching = false;
+    }
+
+    private void Die()
+    {
+        Destroy(gameObject);
+    }
 }
