@@ -13,7 +13,8 @@ public class DialogueSystem : MonoBehaviour
 
     [Header("Chatter Settings")]
     [Range(0.1f, 0.3f)] public float pitchVariation = 0.15f; 
-    public int soundFrequency = 2;   
+    public int soundFrequency = 2;
+    [Range(0f, 1f)] public float typingVolume = 0.5f;
 
     private AudioSource uiSource;    // For Enter/Clicks
     private AudioSource speechSource; // For Typing Chatter
@@ -31,6 +32,7 @@ public class DialogueSystem : MonoBehaviour
         // Setup two distinct sources
         uiSource = gameObject.AddComponent<AudioSource>();
         speechSource = gameObject.AddComponent<AudioSource>();
+        speechSource.volume = typingVolume;
 
         // Ensure the UI click is always "normal"
         uiSource.pitch = 1.0f;
