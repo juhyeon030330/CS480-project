@@ -6,9 +6,9 @@ public class EndLevelTrigger : MonoBehaviour
     public Timer timerScript;
 
     // Make timer appear only when ending the level
-    void OnCollisionEnter(Collision collision)
+    void OnTriggerEnter(Collider other)
     {
-        if (collision.gameObject.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             timerScript.paused = true;
             endScript.Show();
