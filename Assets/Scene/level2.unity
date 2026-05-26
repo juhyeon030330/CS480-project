@@ -46150,6 +46150,18 @@ PrefabInstance:
       propertyPath: m_AdditionalShaderChannelsFlag
       value: 25
       objectReference: {fileID: 0}
+    - target: {fileID: 1020568301224065233, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.6880001
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020568301224065233, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.053
+      objectReference: {fileID: 0}
+    - target: {fileID: 1020568301224065233, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0.3390046
+      objectReference: {fileID: 0}
     - target: {fileID: 1977754494192501094, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: m_Material
       value: 
@@ -46166,6 +46178,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7689967752803709658, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
+      propertyPath: camera
+      value: 
+      objectReference: {fileID: 124707551}
     - target: {fileID: 8391860146986964433, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       propertyPath: m_Name
       value: FirstPersonController (1)
@@ -46247,11 +46263,9 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7538110949034809170, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 5178382382890178608, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1715073092}
     - targetCorrespondingSourceObject: {fileID: 1738217436928909815, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1876536951}
@@ -46262,9 +46276,6 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 8391860146986964433, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
       insertIndex: -1
       addedObject: {fileID: 550413936}
-    - targetCorrespondingSourceObject: {fileID: 8391860146986964433, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 550413935}
   m_SourcePrefab: {fileID: 100100000, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
 --- !u!1 &287722923
 GameObject:
@@ -67246,11 +67257,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405816969}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!4 &406000758 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5178382382890178608, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
-  m_PrefabInstance: {fileID: 287686061}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &406182901
 GameObject:
   m_ObjectHideFlags: 0
@@ -87722,26 +87728,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 8391860146986964433, guid: 9d2827a8f4c904eaf86bd78af2a813fe, type: 3}
   m_PrefabInstance: {fileID: 287686061}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &550413935
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 550413934}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8a84f7a90237e436cbd77e9d8c834946, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerThrowingKnife
-  camera: {fileID: 124707551}
-  attackPoint: {fileID: 1715073092}
-  knifeObject: {fileID: 9137246287973481035, guid: ebf1d0e90a04f444eb85b227c576b5c2, type: 3}
-  totalKnives: 3
-  throwCooldown: 2
-  throwKey: 102
-  throwForce: 10
-  throwUpwardForce: 0.5
 --- !u!114 &550413936
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265246,37 +265232,6 @@ Transform:
   - {fileID: 1069518632}
   m_Father: {fileID: 505554118}
   m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
---- !u!1 &1715073091
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1715073092}
-  m_Layer: 0
-  m_Name: ThrowAttackPoint
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1715073092
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1715073091}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.6880001, y: -0.049000025, z: 0.3390046}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 406000758}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1715734800
 GameObject:
   m_ObjectHideFlags: 0

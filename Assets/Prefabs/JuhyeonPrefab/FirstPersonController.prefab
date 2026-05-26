@@ -5135,6 +5135,37 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &3628352196115628728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1020568301224065233}
+  m_Layer: 0
+  m_Name: ThrowAttackPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1020568301224065233
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3628352196115628728}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0.6880001, y: -0.04900002, z: 0.3390046}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5178382382890178608}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4291572477549023857
 GameObject:
   m_ObjectHideFlags: 0
@@ -5215,6 +5246,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 38693193691570616}
+  - {fileID: 1020568301224065233}
   m_Father: {fileID: 8833973256945457682}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5949788903308895591
@@ -10217,6 +10249,7 @@ GameObject:
   - component: {fileID: 1977754494192501094}
   - component: {fileID: 7369333158076297862}
   - component: {fileID: 8536251847840790925}
+  - component: {fileID: 7689967752803709658}
   m_Layer: 0
   m_Name: FirstPersonController
   m_TagString: Player
@@ -10363,6 +10396,9 @@ MonoBehaviour:
   DiveEffect: {fileID: 5200542470235336818}
   HitSound: {fileID: 8300000, guid: 510ef9a20f01d4f1d9f5f1c3e5541d75, type: 3}
   DiveSound: {fileID: 8300000, guid: 825b827d52fc74d13be91248e23b3c02, type: 3}
+  RollSound: {fileID: 0}
+  RollPounceSound: {fileID: 0}
+  lockOnScript: {fileID: 0}
   playerCamera: {fileID: 6915961235391336077}
   fov: 90
   invertCamera: 0
@@ -10404,6 +10440,14 @@ MonoBehaviour:
   airAcceleration: 10
   onHitPopUp: 7
   onHitPopBack: 3
+  maxSlideTime: 0.2
+  maxHitStateTime: 0.2
+  rollStateLength: 0.6
+  rollStateSweetSpotLength: 0.1
+  rollSpeed: 15
+  rollPouncePower: 25
+  rollPounceVert: 0.2
+  maxPounceDeviation: 180
   enableCrouch: 0
   holdToCrouch: 1
   crouchKey: 306
@@ -10413,6 +10457,26 @@ MonoBehaviour:
   joint: {fileID: 5178382382890178608}
   bobSpeed: 10
   bobAmount: {x: 0, y: 0.1, z: 0}
+--- !u!114 &7689967752803709658
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8391860146986964433}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8a84f7a90237e436cbd77e9d8c834946, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerThrowingKnife
+  camera: {fileID: 0}
+  attackPoint: {fileID: 1020568301224065233}
+  knifeObject: {fileID: 9137246287973481035, guid: ebf1d0e90a04f444eb85b227c576b5c2, type: 3}
+  totalKnives: 3
+  throwCooldown: 1
+  throwKey: 102
+  throwForce: 10
+  throwUpwardForce: 0.5
 --- !u!1 &9218799882077694181
 GameObject:
   m_ObjectHideFlags: 0

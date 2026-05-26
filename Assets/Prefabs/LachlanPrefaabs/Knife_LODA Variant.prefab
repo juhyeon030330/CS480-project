@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 23474749719786896, guid: 3c5ca84f9afa3764dbff7466778ccf63, type: 3}
+      propertyPath: m_CastShadows
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -71,6 +75,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1498691773230430, guid: 3c5ca84f9afa3764dbff7466778ccf63, type: 3}
       insertIndex: -1
       addedObject: {fileID: 7902065940065099731}
+    - targetCorrespondingSourceObject: {fileID: 1498691773230430, guid: 3c5ca84f9afa3764dbff7466778ccf63, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 5720313696360886745}
   m_SourcePrefab: {fileID: 100100000, guid: 3c5ca84f9afa3764dbff7466778ccf63, type: 3}
 --- !u!1 &9137246287973481035 stripped
 GameObject:
@@ -104,3 +111,15 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &5720313696360886745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9137246287973481035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f032bd4a078b4e31a430c0e30e7f030, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::KnifeBehavior
