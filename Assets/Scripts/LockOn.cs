@@ -94,8 +94,24 @@ else
 
     private void ExecuteLockOnRotation()
     {
-        // Calculate direction to the target
-        Vector3 targetDirection = targetEnemy.position - transform.position;
+        // 1. Get the center/pivot position
+        Vector3 targetPosition = targetEnemy.position;
+
+        // 2. Attempt to find a collider to calculate the top height
+        Collider enemyCollider = targetEnemy.GetComponentInChildren<Collider>();
+        if (enemyCollider != null)
+        {
+            // Use the top of the bounding box
+            targetPosition.y = enemyCollider.bounds.max.y;
+        }
+        else
+        {
+            // Fallback: Just offset upwards by a default value if no collider is found
+            targetPosition.y += 2f; 
+        }
+
+        // Calculate direction to the top of the target
+        Vector3 targetDirection = targetPosition - transform.position;
         Quaternion targetRotation = Quaternion.LookRotation(targetDirection);
         Vector3 eulerAngles = targetRotation.eulerAngles;
 
