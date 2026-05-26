@@ -8,6 +8,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 #if UNITY_EDITOR
     using UnityEditor;
@@ -164,6 +165,17 @@ public class FirstPersonController : MonoBehaviour
 
     #endregion
 
+    #region Health & Checkpoints
+
+    public float maxHealth = 100.0f;
+    private float currentHealth = 1f;
+    public float maxIFrames = 0.5f;
+    private float IFrameTimer = 1f;
+    private GameObject lastCheckpoint = null;
+
+
+    #endregion
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -232,6 +244,8 @@ public class FirstPersonController : MonoBehaviour
 
         airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
         rollDirection = new Vector3(0.0f, 0.0f, 0.0f);
+        currentHealth = maxHealth;
+        IFrameTimer = 1f;
     }
 
     float camRotation;
@@ -627,7 +641,18 @@ public class FirstPersonController : MonoBehaviour
             if (rollStateTimer < 0.0f)
             {
                 rollStateTimer = 0.0f;
-            } 
+            }
+        }
+        #endregion
+
+        #region IFrame Time
+        if (IFrameTimer > 0.0f)
+        {
+            IFrameTimer -= elapsed_time;
+            if (IFrameTimer < 0.0f)
+            {
+                IFrameTimer = 0.0f;
+            }
         }
         #endregion
     }
@@ -892,6 +917,19 @@ public class FirstPersonController : MonoBehaviour
     private bool PlayerCanDoMeleeDamage()
     {
         return isDiving || isPouncing || isRollPouncing;
+    }
+
+    private void TakeDamage(DamageData data)
+    {
+        if (IFrameTimer > 0.0f) return;
+        currentHealth -= data.amount;
+        if (currentHealth <= 0.0f) Die();
+        // 
+    }
+    
+    private void Die()
+    {
+        if(lastCheckpoint == null) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 }
 
