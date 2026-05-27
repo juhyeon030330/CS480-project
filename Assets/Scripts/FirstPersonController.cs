@@ -72,35 +72,6 @@ public class FirstPersonController : MonoBehaviour
     // Internal Variables
     private bool isWalking = false;
 
-    #region Sprint
-
-    public bool enableSprint = true;
-    public bool unlimitedSprint = false;
-    public KeyCode sprintKey = KeyCode.LeftShift;
-    public float sprintSpeed = 7f;
-    public float sprintDuration = 5f;
-    public float sprintCooldown = .5f;
-    public float sprintFOV = 80f;
-    public float sprintFOVStepTime = 10f;
-
-    // Sprint Bar
-    public bool useSprintBar = true;
-    public bool hideBarWhenFull = true;
-    public Image sprintBarBG;
-    public Image sprintBar;
-    public float sprintBarWidthPercent = .3f;
-    public float sprintBarHeightPercent = .015f;
-
-    // Internal Variables
-    private CanvasGroup sprintBarCG;
-    private bool isSprinting = false;
-    private float sprintRemaining;
-    private float sprintBarWidth;
-    private float sprintBarHeight;
-    private bool isSprintCooldown = false;
-    private float sprintCooldownReset;
-
-    #endregion
 
     #region Jump
 
@@ -167,12 +138,23 @@ public class FirstPersonController : MonoBehaviour
 
     #region Health & Checkpoints
 
-    public float maxHealth = 100.0f;
-    private float currentHealth = 1f;
+    public float maxHealth = 100f;
     public float maxIFrames = 0.5f;
-    private float IFrameTimer = 1f;
     private GameObject lastCheckpoint = null;
 
+    // Health Bar
+    public bool useHealthBar = true;
+    public Image healthBarBG;
+    public Image healthBar;
+    public float healthBarWidthPercent = .3f;
+    public float healthBarHeightPercent = .015f;
+
+    // Internal Variables
+    private CanvasGroup healthBarCG;
+    private float currentHealth = 1f;
+    private float healthBarWidth;
+    private float healthBarHeight;
+    private float IFrameTimer = 1f;
 
     #endregion
 
@@ -186,12 +168,6 @@ public class FirstPersonController : MonoBehaviour
         playerCamera.fieldOfView = fov;
         originalScale = transform.localScale;
         jointOriginalPos = joint.localPosition;
-
-        if (!unlimitedSprint)
-        {
-            sprintRemaining = sprintDuration;
-            sprintCooldownReset = sprintCooldown;
-        }
     }
 
     void Start()
@@ -211,40 +187,27 @@ public class FirstPersonController : MonoBehaviour
             crosshairObject.gameObject.SetActive(false);
         }
 
-        #region Sprint Bar
+        #region Health Bar
 
-        sprintBarCG = GetComponentInChildren<CanvasGroup>();
+        healthBarCG = GetComponentInChildren<CanvasGroup>();
+        healthBarBG.gameObject.SetActive(true);
+        healthBar.gameObject.SetActive(true);
 
-        if (useSprintBar)
-        {
-            sprintBarBG.gameObject.SetActive(true);
-            sprintBar.gameObject.SetActive(true);
+        float screenWidth = Screen.width;
+        float screenHeight = Screen.height;
 
-            float screenWidth = Screen.width;
-            float screenHeight = Screen.height;
+        healthBarWidth = screenWidth * healthBarWidthPercent;
+        healthBarHeight = screenHeight * healthBarHeightPercent;
 
-            sprintBarWidth = screenWidth * sprintBarWidthPercent;
-            sprintBarHeight = screenHeight * sprintBarHeightPercent;
-
-            sprintBarBG.rectTransform.sizeDelta = new Vector3(sprintBarWidth, sprintBarHeight, 0f);
-            sprintBar.rectTransform.sizeDelta = new Vector3(sprintBarWidth - 2, sprintBarHeight - 2, 0f);
-
-            if (hideBarWhenFull)
-            {
-                sprintBarCG.alpha = 0;
-            }
-        }
-        else
-        {
-            sprintBarBG.gameObject.SetActive(false);
-            sprintBar.gameObject.SetActive(false);
-        }
+        healthBarBG.rectTransform.sizeDelta = new Vector3(healthBarWidth, healthBarHeight, 0f);
+        healthBar.rectTransform.sizeDelta = new Vector3(healthBarWidth - 2, healthBarHeight - 2, 0f);
 
         #endregion
 
         airControlCap = new Vector3(0.0f, 0.0f, 0.0f);
         rollDirection = new Vector3(0.0f, 0.0f, 0.0f);
         currentHealth = maxHealth;
+        UpdateHealthBar();
         IFrameTimer = 1f;
     }
 
@@ -297,7 +260,7 @@ public class FirstPersonController : MonoBehaviour
         {
             // Changes isZoomed when key is pressed
             // Behavior for toogle zoom
-            if (Input.GetKeyDown(zoomKey) && !holdToZoom && !isSprinting)
+            if (Input.GetKeyDown(zoomKey) && !holdToZoom)
             {
                 if (!isZoomed)
                 {
@@ -311,7 +274,7 @@ public class FirstPersonController : MonoBehaviour
 
             // Changes isZoomed when key is pressed
             // Behavior for hold to zoom
-            if (holdToZoom && !isSprinting)
+            if (holdToZoom)
             {
                 if (Input.GetKeyDown(zoomKey))
                 {
@@ -328,7 +291,7 @@ public class FirstPersonController : MonoBehaviour
             {
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, zoomFOV, zoomStepTime * Time.deltaTime);
             }
-            else if (!isZoomed && !isSprinting)
+            else if (!isZoomed)
             {
                 playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, fov, zoomStepTime * Time.deltaTime);
             }
@@ -337,57 +300,6 @@ public class FirstPersonController : MonoBehaviour
         #endregion
         #endregion
 
-        #region Sprint
-
-        // Unused
-        if (enableSprint)
-        {
-            if (isSprinting)
-            {
-                isZoomed = false;
-                playerCamera.fieldOfView = Mathf.Lerp(playerCamera.fieldOfView, sprintFOV, sprintFOVStepTime * Time.deltaTime);
-
-                // Drain sprint remaining while sprinting
-                if (!unlimitedSprint)
-                {
-                    sprintRemaining -= 1 * Time.deltaTime;
-                    if (sprintRemaining <= 0)
-                    {
-                        isSprinting = false;
-                        isSprintCooldown = true;
-                    }
-                }
-            }
-            else
-            {
-                // Regain sprint while not sprinting
-                sprintRemaining = Mathf.Clamp(sprintRemaining += 1 * Time.deltaTime, 0, sprintDuration);
-            }
-
-            // Handles sprint cooldown 
-            // When sprint remaining == 0 stops sprint ability until hitting cooldown
-            if (isSprintCooldown)
-            {
-                sprintCooldown -= 1 * Time.deltaTime;
-                if (sprintCooldown <= 0)
-                {
-                    isSprintCooldown = false;
-                }
-            }
-            else
-            {
-                sprintCooldown = sprintCooldownReset;
-            }
-
-            // Handles sprintBar 
-            if (useSprintBar && !unlimitedSprint)
-            {
-                float sprintRemainingPercent = sprintRemaining / sprintDuration;
-                sprintBar.transform.localScale = new Vector3(sprintRemainingPercent, 1f, 1f);
-            }
-        }
-
-        #endregion
 
         #region Jump
 
@@ -472,99 +384,57 @@ public class FirstPersonController : MonoBehaviour
                 isWalking = false;
             }
 
-            // All movement calculations shile sprint is active
-            // Unused
-            if (enableSprint && Input.GetKey(sprintKey) && sprintRemaining > 0f && !isSprintCooldown)
+
+
+            // // Apply a force that attempts to reach our target velocity
+            Vector3 velocity = rb.linearVelocity;
+            // Vector3 velocityChange = (targetVelocity - velocity);
+            // velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+            // velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+            // velocityChange.y = 0;
+
+            if (rollStateTimer > 0.0f)
             {
-                targetVelocity = transform.TransformDirection(targetVelocity) * sprintSpeed;
-
-                // Apply a force that attempts to reach our target velocity
-                Vector3 velocity = rb.linearVelocity;
-                Vector3 velocityChange = (targetVelocity - velocity);
-                velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-                velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0;
-
-                // Player is only moving when valocity change != 0
-                // Makes sure fov change only happens during movement
-                if (velocityChange.x != 0 || velocityChange.z != 0)
-                {
-                    isSprinting = true;
-
-                    if (isCrouched)
-                    {
-                        Crouch();
-                    }
-
-                    if (hideBarWhenFull && !unlimitedSprint)
-                    {
-                        sprintBarCG.alpha += 5 * Time.deltaTime;
-                    }
-                }
-
-                rb.AddForce(velocityChange, ForceMode.VelocityChange);
+                targetVelocity = rollDirection * rollSpeed;
+                rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
+                ResetAirControl();
             }
-            // All movement calculations while walking
-            else
+            // air acceleration is gradual; ground acceleration is instant
+            // When we're in the "slide" state, we use air controls
+            else if (!isGrounded || (slideTimer > 0.0f) || (hitStateTimer > 0.0f))
             {
-                isSprinting = false;
-
-                if (hideBarWhenFull && sprintRemaining == sprintDuration)
+                // TODO: Move this to its own function
+                // In essence, while airborn, our player can add a maximum speed to their trajectory.
+                // What we do here is we determine the direction to apply acceleration, ensuring that
+                // the player isn't exceeding this max-speed-vector circle.
+                targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;   // the force the player wants to apply
+                Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);                   // (for now) the current spot on the air-control-circle we are
+                if ((targetVelocity + airControlCap).sqrMagnitude > maxAirControl * maxAirControl)                  // if the result of just adding the force the player wants to apply to the air-control-cap vector
+                                                                                                                    // would leave that inside of the circle, we do that;
+                                                                                                                    // otherwise we clamp to the circle.
+                                                                                                                    // uses sqrMagnitudue to save on unnecessary sqrt calculations.
                 {
-                    sprintBarCG.alpha -= 3 * Time.deltaTime;
-                }
-
-
-
-                // // Apply a force that attempts to reach our target velocity
-                Vector3 velocity = rb.linearVelocity;
-                // Vector3 velocityChange = (targetVelocity - velocity);
-                // velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-                // velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                // velocityChange.y = 0;
-
-                if (rollStateTimer > 0.0f)
-                {
-                    targetVelocity = rollDirection * rollSpeed;
-                    rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
-                    ResetAirControl();
-                }
-                // air acceleration is gradual; ground acceleration is instant
-                // When we're in the "slide" state, we use air controls
-                else if (!isGrounded || (slideTimer > 0.0f) || (hitStateTimer > 0.0f))
-                {
-                    // TODO: Move this to its own function
-                    // In essence, while airborn, our player can add a maximum speed to their trajectory.
-                    // What we do here is we determine the direction to apply acceleration, ensuring that
-                    // the player isn't exceeding this max-speed-vector circle.
-                    targetVelocity = transform.TransformDirection(targetVelocity) * airAcceleration * Time.deltaTime;   // the force the player wants to apply
-                    Vector3 moveVec = new Vector3(airControlCap.x, airControlCap.y, airControlCap.z);                   // (for now) the current spot on the air-control-circle we are
-                    if ((targetVelocity + airControlCap).sqrMagnitude > maxAirControl * maxAirControl)                  // if the result of just adding the force the player wants to apply to the air-control-cap vector
-                                                                                                                        // would leave that inside of the circle, we do that;
-                                                                                                                        // otherwise we clamp to the circle.
-                                                                                                                        // uses sqrMagnitudue to save on unnecessary sqrt calculations.
-                    {
-                        // clamp air control to the circle
-                        airControlCap = (targetVelocity + airControlCap) / (targetVelocity + airControlCap).magnitude * maxAirControl;
-                    }
-                    else
-                    {
-                        // add it straight up
-                        airControlCap = targetVelocity + airControlCap;
-                    }
-                    // this is slightly obtuse but we *first* update our position inside of the air control circle,
-                    // and *then* use the resulting position in the air control circle to accelerate the player.
-                    moveVec = airControlCap - moveVec;
-                    rb.AddForce(moveVec, ForceMode.VelocityChange);
+                    // clamp air control to the circle
+                    airControlCap = (targetVelocity + airControlCap) / (targetVelocity + airControlCap).magnitude * maxAirControl;
                 }
                 else
                 {
-                    // when grounded, we set linearvelocity (makes grounded movement feel more snappy)
-                    targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
-                    rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
-                    ResetAirControl();
+                    // add it straight up
+                    airControlCap = targetVelocity + airControlCap;
                 }
+                // this is slightly obtuse but we *first* update our position inside of the air control circle,
+                // and *then* use the resulting position in the air control circle to accelerate the player.
+                moveVec = airControlCap - moveVec;
+                rb.AddForce(moveVec, ForceMode.VelocityChange);
             }
+            else
+            {
+                // when grounded, we set linearvelocity (makes grounded movement feel more snappy)
+                targetVelocity = transform.TransformDirection(targetVelocity) * walkSpeed;
+                rb.linearVelocity = new Vector3(targetVelocity.x, velocity.y, targetVelocity.z);
+                ResetAirControl();
+            }
+            
         }
         #endregion
 
@@ -824,13 +694,7 @@ public class FirstPersonController : MonoBehaviour
     {
         if (isWalking)
         {
-            // Calculates HeadBob speed during sprint
-            if (isSprinting)
-            {
-                timer += Time.deltaTime * (bobSpeed + sprintSpeed);
-            }
-            // Calculates HeadBob speed during crouched movement
-            else if (isCrouched)
+            if (isCrouched)
             {
                 timer += Time.deltaTime * (bobSpeed * speedReduction);
             }
@@ -926,10 +790,15 @@ public class FirstPersonController : MonoBehaviour
         if (currentHealth <= 0.0f) Die();
         // 
     }
-    
+
     private void Die()
     {
-        if(lastCheckpoint == null) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        if (lastCheckpoint == null) SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+    }
+
+    private void UpdateHealthBar()
+    {
+        healthBar.transform.localScale = new Vector3(Mathf.Clamp(currentHealth / maxHealth, 0.0f, 1.0f), 1.0f, 1.0f);
     }
 }
 
