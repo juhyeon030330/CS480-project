@@ -17,4 +17,13 @@ public class SceneTransitionTrigger : MonoBehaviour
             SceneManager.LoadScene(sceneToLoad);
         }
     }
+
+    // Allow forced entry into next level
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            SceneManager.LoadScene(sceneToLoad);
+        }
+    }
 }

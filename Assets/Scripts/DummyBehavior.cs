@@ -86,6 +86,13 @@ public class DummyBehavior : MonoBehaviour, IDamageable
 
     private void Die()
     {
+        KnifeBehavior[] knives = GetComponentsInChildren<KnifeBehavior>();
+
+        foreach (KnifeBehavior knife in knives)
+        {
+            knife.Detach();
+        }
+
         Destroy(gameObject);
     }
 }
