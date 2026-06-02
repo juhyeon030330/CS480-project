@@ -7,6 +7,7 @@ public class KnifeBehavior : MonoBehaviour
     private bool targetHit = false;
     private GameObject hitEnemy;
     public bool hasLanded = false;
+    public AudioClip pickupSound;
 
     private void Start()
     {
@@ -18,6 +19,9 @@ public class KnifeBehavior : MonoBehaviour
         if (other.gameObject.CompareTag("Player") && hasLanded == true)
         {
             other.gameObject.GetComponent<PlayerThrowingKnife>().totalKnives++;
+
+            // added pickup sound
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
 
             other.gameObject.GetComponent<PlayerThrowingKnife>().AddKnife();
 
