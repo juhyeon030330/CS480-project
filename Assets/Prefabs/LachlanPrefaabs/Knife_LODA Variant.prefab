@@ -123,3 +123,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f032bd4a078b4e31a430c0e30e7f030, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::KnifeBehavior
+  hasLanded: 0
+  pickupSound: {fileID: 8300000, guid: 40397027f796c47bdb444131bc0273f0, type: 3}
