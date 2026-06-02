@@ -92,7 +92,7 @@ public class DummyBehavior : MonoBehaviour, IDamageable
         {
             knife.Detach();
         }
-
+        gameObject.tag = "Untagged";
         Destroy(gameObject);
     }
 }
