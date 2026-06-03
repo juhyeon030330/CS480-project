@@ -4,10 +4,19 @@ public class DoorTeleport : MonoBehaviour
 {
     public Transform spawnPoint;
 
+    public GameObject barSound;
+
+    public bool entrance;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
+            if (entrance == true)
+                barSound.SetActive(true);
+            else
+                barSound.SetActive(false);
+
             CharacterController controller = other.GetComponent<CharacterController>();
 
             if (controller != null)
