@@ -263,7 +263,7 @@ SphereCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Radius: 0.47608635
+  m_Radius: 0.6
   m_Center: {x: -0.0044039255, y: 0.42491573, z: -0.024982436}
 --- !u!114 &2785300557099616797
 MonoBehaviour:
@@ -588,7 +588,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5202194472933746062}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
