@@ -749,6 +749,7 @@ public class FirstPersonController : MonoBehaviour
 
             // Handle Air Control And Combo
             // Fix Me! Double flip!
+            float hp_to_restore = 10;
             ResetAirControl();
             Vector3 dirToEnemy = other.gameObject.transform.position - rb.position;
             dirToEnemy.y = 0;
@@ -759,6 +760,7 @@ public class FirstPersonController : MonoBehaviour
             }
             if (lastEnemyThisCombo != other.gameObject)
             {
+                hp_to_restore = 5;
                 isDiving = false;
                 isPouncing = false;
                 isRollPouncing = false;
@@ -775,6 +777,27 @@ public class FirstPersonController : MonoBehaviour
             slideTimer = 0.0f;
             rollStateTimer = 0.0f;
 
+
+            currentHealth = Mathf.Clamp(currentHealth + hp_to_restore, 0.0f, maxHealth);
+            UpdateHealthBar();
+        }
+    }
+
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("PlayerHurtBox"))
+        {
+            if (IFrameTimer <= 0.0f)
+            {
+                DamageData dmgToTake = new DamageData
+                {
+                    amount = 25f,
+                    source = other.gameObject,
+                    hitDirection = (transform.position - other.transform.position).normalized
+                };
+
+                TakeDamage(dmgToTake);
+            }
         }
     }
 
@@ -786,8 +809,10 @@ public class FirstPersonController : MonoBehaviour
     private void TakeDamage(DamageData data)
     {
         if (IFrameTimer > 0.0f) return;
+        IFrameTimer = maxIFrames;
         currentHealth -= data.amount;
         if (currentHealth <= 0.0f) Die();
+        UpdateHealthBar();
         // 
     }
 

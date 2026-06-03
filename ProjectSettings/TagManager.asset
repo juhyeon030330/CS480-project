@@ -8,6 +8,7 @@ TagManager:
   - Boss
   - Enemy
   - Key
+  - PlayerHurtBox
   layers:
   - Default
   - TransparentFX

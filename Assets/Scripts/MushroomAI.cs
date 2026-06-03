@@ -7,6 +7,8 @@ public class MushroomAI : MonoBehaviour
     public AudioClip chargeSound;
     public AudioClip headbuttSound;
     private AudioSource audioSource;
+
+    public GameObject lungeHurtBox;
     
     [Header("Ranges")]
     public float detectionRange = 10f; 
@@ -28,6 +30,7 @@ public class MushroomAI : MonoBehaviour
     {
         anim = GetComponent<Animator>();
         audioSource = GetComponent<AudioSource>();
+        lungeHurtBox.gameObject.SetActive(false);
     }
 
     void FixedUpdate() // Keeping it in FixedUpdate for consistency!
@@ -91,8 +94,9 @@ public class MushroomAI : MonoBehaviour
 
         // PHASE 2: THE HEADBUTT
         isThrusting = true;
+        lungeHurtBox.gameObject.SetActive(true);
         audioSource.clip = headbuttSound;
-        audioSource.Play();       
+        audioSource.Play();
         timer = 0f;
         while (timer < 0.15f)
         {
@@ -101,6 +105,7 @@ public class MushroomAI : MonoBehaviour
             yield return null;
         }
         isThrusting = false;
+        lungeHurtBox.gameObject.SetActive(false);
 
         // PHASE 3: STEP BACK
         timer = 0f;
@@ -133,6 +138,11 @@ public class MushroomAI : MonoBehaviour
 
 
         isAttacking = false;
+    }
+    
+    private void Die()
+    {
+        lungeHurtBox.gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()
