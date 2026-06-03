@@ -778,6 +778,24 @@ public class FirstPersonController : MonoBehaviour
         }
     }
 
+    void OnTriggerStay(Collider other)
+    {
+        if (other.gameObject.CompareTag("PlayerHurtBox"))
+        {
+            if (IFrameTimer <= 0.0f)
+            {
+                DamageData dmgToTake = new DamageData
+                {
+                    amount = 25f,
+                    source = other.gameObject,
+                    hitDirection = (transform.position - other.transform.position).normalized
+                };
+
+                TakeDamage(dmgToTake);
+            }
+        }
+    }
+
     private bool PlayerCanDoMeleeDamage()
     {
         return isDiving || isPouncing || isRollPouncing;
@@ -786,8 +804,10 @@ public class FirstPersonController : MonoBehaviour
     private void TakeDamage(DamageData data)
     {
         if (IFrameTimer > 0.0f) return;
+        IFrameTimer = maxIFrames;
         currentHealth -= data.amount;
         if (currentHealth <= 0.0f) Die();
+        UpdateHealthBar();
         // 
     }
 
