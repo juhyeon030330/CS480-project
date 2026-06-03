@@ -8,6 +8,9 @@ public class KnifeBehavior : MonoBehaviour
     private GameObject hitEnemy;
     public bool hasLanded = false;
     public AudioClip pickupSound;
+    public GameObject hitEffect;
+    public AudioClip HitSound;
+
 
     private void Start()
     {
@@ -100,9 +103,12 @@ public class KnifeBehavior : MonoBehaviour
                 hitDirection = (other.gameObject.transform.position - transform.position).normalized
             };
             IDamageable target = other.gameObject.GetComponentInParent<IDamageable>();
-            if (target != null)
+            if (target != null && Camera.main != null)
             {
                 target.TakeDamage(knifeDmg);
+                if (HitSound != null) AudioSource.PlayClipAtPoint(HitSound, Camera.main.transform.position);
+                Vector3 contactPoint = other.ClosestPoint(transform.position);
+                if (hitEffect != null) Instantiate(hitEffect, contactPoint, Quaternion.identity);
             }
         }
     }

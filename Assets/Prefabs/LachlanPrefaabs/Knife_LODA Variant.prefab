@@ -125,3 +125,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::KnifeBehavior
   hasLanded: 0
   pickupSound: {fileID: 8300000, guid: 40397027f796c47bdb444131bc0273f0, type: 3}
+  hitEffect: {fileID: 5900683585750222841, guid: 55559df74412a456394ce42c4e6b2e5c, type: 3}
+  HitSound: {fileID: 8300000, guid: 510ef9a20f01d4f1d9f5f1c3e5541d75, type: 3}

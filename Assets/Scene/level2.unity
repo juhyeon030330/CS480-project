@@ -198339,6 +198339,7 @@ MonoBehaviour:
   myCustomSentences:
   - 'Find the three hidden knives. Then, follow the stars on the ground to enter
     the bar area '
+  - 'Knives can be thrown with the [F] key '
 --- !u!114 &1180807403
 MonoBehaviour:
   m_ObjectHideFlags: 0
